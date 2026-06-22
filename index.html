@@ -1,0 +1,673 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>myAlfred — Savings Plan Prototype</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap');
+  * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
+  html, body { background: #1a2340; min-height: 100vh; font-family: 'Inter', -apple-system, sans-serif; }
+  body { display: flex; flex-direction: column; justify-content: center; align-items: center; padding: 24px; gap: 16px; }
+
+  .page-title { color: white; font-size: 18px; font-weight: 800; text-align: center; }
+  .page-sub { color: rgba(255,255,255,0.6); font-size: 13px; text-align: center; margin-top: -8px; margin-bottom: 4px; }
+
+  .phone-shell { width: 375px; height: 720px; background: #f5f7fa; border-radius: 44px; border: 8px solid #0f172a; box-shadow: 0 30px 80px rgba(0,0,0,0.6), inset 0 0 0 2px #1e293b; overflow: hidden; position: relative; display: flex; flex-direction: column; }
+  .notch-bar { background: #0f172a; height: 28px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+  .notch { width: 100px; height: 20px; background: #0f172a; border-radius: 0 0 16px 16px; display: flex; align-items: center; justify-content: center; gap: 6px; }
+  .notch-cam { width: 8px; height: 8px; border-radius: 50%; background: #1e293b; }
+  .notch-mic { width: 20px; height: 5px; border-radius: 3px; background: #1e293b; }
+  .screen-container { flex: 1; overflow: hidden; position: relative; }
+  .screen { position: absolute; inset: 0; overflow-y: auto; overflow-x: hidden; background: #f5f7fa; transform: translateX(100%); transition: transform 0.32s cubic-bezier(0.4,0,0.2,1); display: flex; flex-direction: column; }
+  .screen.active { transform: translateX(0); }
+  .screen::-webkit-scrollbar { display: none; }
+  .scroll-content { flex: 1; overflow-y: auto; }
+  .scroll-content::-webkit-scrollbar { display: none; }
+
+  .status { height: 26px; display: flex; align-items: center; justify-content: space-between; padding: 0 18px; flex-shrink: 0; background: white; }
+  .status span { font-size: 12px; font-weight: 700; color: #0f172a; }
+  .topnav { background: white; padding: 10px 16px; display: flex; align-items: center; gap: 10px; border-bottom: 1px solid #eef2f8; flex-shrink: 0; }
+  .back-btn { width: 32px; height: 32px; background: #eef2fb; border-radius: 50%; display: flex; align-items: center; justify-content: center; cursor: pointer; flex-shrink: 0; }
+  .back-btn svg { width: 16px; height: 16px; }
+  .topnav-title { font-size: 15px; font-weight: 700; color: #0f172a; flex: 1; }
+  .bottom-nav { background: white; border-top: 1px solid #eef2f8; display: flex; justify-content: space-around; padding: 8px 0 4px; flex-shrink: 0; }
+  .bnav { display: flex; flex-direction: column; align-items: center; gap: 2px; cursor: pointer; padding: 2px 6px; }
+  .bnav-icon { font-size: 19px; line-height: 1; }
+  .bnav-label { font-size: 9px; color: #94a3b8; font-weight: 500; }
+  .bnav.active .bnav-label { color: #1d4ed8; font-weight: 700; }
+  .bnav-dot { width: 4px; height: 4px; border-radius: 50%; background: #1d4ed8; margin: 0 auto; }
+  .btn-primary { border-radius: 12px; padding: 14px; text-align: center; font-size: 14px; font-weight: 700; cursor: pointer; }
+  .btn-orange { background: #f59e0b; color: white; }
+  .btn-blue { background: #1d4ed8; color: white; }
+  .btn-green { background: #16a34a; color: white; }
+  .btn-teal { background: #0f766e; color: white; }
+  .tag { display: inline-flex; align-items: center; font-size: 10px; font-weight: 700; padding: 2px 8px; border-radius: 20px; }
+
+  .alfred-header { background: white; padding: 10px 16px 8px; display: flex; align-items: center; justify-content: space-between; flex-shrink: 0; }
+  .alfred-logo-text { font-size: 20px; font-weight: 800; color: #1d4ed8; letter-spacing: -0.5px; }
+  .alfred-logo-sub { color: #f59e0b; font-size: 10px; font-weight: 600; display: block; margin-top: -4px; }
+  .home-banner { background: linear-gradient(135deg, #1d4ed8 0%, #1e40af 100%); border-radius: 16px; margin: 12px 16px; padding: 16px; color: white; position: relative; overflow: hidden; cursor: pointer; }
+  .home-banner::after { content: '💰'; font-size: 52px; position: absolute; right: 10px; bottom: 6px; opacity: 0.15; }
+  .home-banner-eyebrow { background: rgba(255,255,255,0.2); border-radius: 20px; font-size: 10px; font-weight: 700; display: inline-block; padding: 3px 10px; margin-bottom: 6px; }
+  .home-banner h2 { font-size: 18px; font-weight: 800; line-height: 1.2; margin-bottom: 6px; }
+  .home-banner p { font-size: 12px; opacity: 0.85; margin-bottom: 12px; }
+  .home-banner-cta { background: white; color: #1d4ed8; border-radius: 10px; padding: 8px 16px; font-size: 12px; font-weight: 700; display: inline-block; }
+  .buy-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; padding: 0 16px 16px; }
+  .buy-tile { background: white; border-radius: 14px; padding: 14px 12px; cursor: pointer; box-shadow: 0 1px 4px rgba(0,0,0,0.06); border: 2px solid transparent; }
+  .buy-tile.highlight { border-color: #1d4ed8; background: #f0f5ff; }
+  .buy-tile:active { transform: scale(0.97); }
+  .buy-tile-icon { font-size: 26px; margin-bottom: 6px; }
+  .buy-tile h4 { font-size: 13px; font-weight: 700; color: #0f172a; }
+  .buy-tile p { font-size: 11px; color: #64748b; margin-top: 1px; }
+  .stats-row { display: flex; gap: 8px; padding: 0 16px 12px; }
+  .stat-chip { flex: 1; background: white; border-radius: 10px; padding: 8px; text-align: center; }
+  .stat-chip-num { font-size: 14px; font-weight: 800; color: #1d4ed8; }
+  .stat-chip-label { font-size: 9px; color: #64748b; margin-top: 1px; }
+
+  .mode-toggle { display: flex; margin: 0 16px 12px; background: #eef2fb; border-radius: 10px; padding: 3px; }
+  .mode-btn { flex: 1; padding: 9px; text-align: center; font-size: 12px; font-weight: 600; border-radius: 8px; cursor: pointer; color: #64748b; }
+  .mode-btn.on { background: #1d4ed8; color: white; box-shadow: 0 2px 8px rgba(29,78,216,0.3); }
+  .card { background: white; border-radius: 14px; padding: 14px; margin: 0 16px 10px; box-shadow: 0 1px 4px rgba(0,0,0,0.05); }
+  .slider-wrap { margin-bottom: 14px; }
+  .slider-wrap label { font-size: 12px; color: #64748b; display: flex; justify-content: space-between; margin-bottom: 8px; }
+  .slider-wrap label strong { color: #1d4ed8; font-weight: 700; }
+  .fake-slider { height: 6px; background: #e2e8f0; border-radius: 3px; position: relative; cursor: pointer; }
+  .fake-slider-fill { height: 6px; background: linear-gradient(to right, #1d4ed8, #3b82f6); border-radius: 3px; }
+  .fake-slider-thumb { width: 18px; height: 18px; background: white; border: 3px solid #1d4ed8; border-radius: 50%; position: absolute; top: -6px; box-shadow: 0 2px 6px rgba(29,78,216,0.3); }
+  .result-box { background: linear-gradient(135deg, #ecfdf5, #d1fae5); border-radius: 12px; padding: 14px; text-align: center; margin-bottom: 12px; }
+  .result-amount { font-size: 32px; font-weight: 800; color: #065f46; }
+  .result-breakdown { display: flex; justify-content: space-around; margin-top: 10px; padding-top: 10px; border-top: 1px solid rgba(16,185,129,0.2); }
+  .rb { text-align: center; }
+  .rb-val { font-size: 14px; font-weight: 700; }
+  .rb-label { font-size: 10px; color: #6b7280; margin-top: 2px; }
+  .chart-bars { display: flex; align-items: flex-end; gap: 5px; height: 70px; }
+  .bar-col { flex: 1; display: flex; flex-direction: column; align-items: center; gap: 3px; }
+  .bar-fill { width: 100%; background: linear-gradient(to top, #f59e0b, #fcd34d); border-radius: 4px 4px 0 0; }
+  .bar-lbl { font-size: 9px; color: #94a3b8; }
+
+  .q-topbar { background: white; padding: 10px 16px 8px; border-bottom: 1px solid #eef2f8; flex-shrink: 0; }
+  .q-customer-row { display: flex; align-items: center; justify-content: space-between; margin-bottom: 10px; }
+  .q-customer-name { font-size: 16px; font-weight: 800; color: #0f172a; }
+  .q-edit-btn { border: 1.5px solid #1d4ed8; border-radius: 8px; padding: 4px 12px; font-size: 12px; font-weight: 600; color: #1d4ed8; cursor: pointer; display: flex; align-items: center; gap: 4px; }
+  .q-params { display: grid; grid-template-columns: 1fr 1fr; gap: 4px 0; }
+  .q-param-row { display: flex; gap: 4px; align-items: baseline; }
+  .q-param-label { font-size: 11px; color: #64748b; }
+  .q-param-val { font-size: 12px; font-weight: 700; color: #0f172a; }
+
+  .q-steps { display: flex; align-items: center; padding: 10px 16px 8px; background: white; border-bottom: 1px solid #eef2f8; flex-shrink: 0; }
+  .qs-item { display: flex; flex-direction: column; align-items: center; flex: 1; }
+  .qs-dot { width: 26px; height: 26px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 11px; font-weight: 700; }
+  .qs-done { background: #16a34a; color: white; }
+  .qs-active { background: #f59e0b; color: white; box-shadow: 0 0 0 3px rgba(245,158,11,0.25); }
+  .qs-todo { background: white; color: #94a3b8; border: 2px solid #e2e8f0; }
+  .qs-label { font-size: 9px; margin-top: 3px; color: #94a3b8; text-align: center; }
+  .qs-label.act { color: #f59e0b; font-weight: 700; }
+  .qs-line { flex: 1; height: 3px; margin-top: -14px; }
+  .qs-line-done { background: #16a34a; }
+  .qs-line-todo { background: #e2e8f0; }
+
+  .calc-banner { background: white; border-radius: 12px; margin: 10px 16px 6px; padding: 11px 14px; display: flex; align-items: center; justify-content: space-between; cursor: pointer; border: 1.5px solid #e2e8f0; }
+  .calc-banner-left { display: flex; align-items: center; gap: 8px; }
+  .calc-banner-icon { font-size: 22px; }
+  .calc-banner-text { font-size: 13px; font-weight: 700; color: #0f172a; }
+  .calc-banner-arrow { font-size: 16px; color: #94a3b8; }
+
+  .select-heading { display: flex; align-items: center; gap: 10px; padding: 8px 16px 6px; }
+  .select-heading-avatar { font-size: 32px; line-height: 1; }
+  .select-heading h2 { font-size: 18px; font-weight: 800; color: #0f172a; }
+
+  .plan-card { background: white; border-radius: 14px; margin: 0 16px 12px; box-shadow: 0 2px 8px rgba(0,0,0,0.08); overflow: hidden; position: relative; }
+  .instant-ribbon { position: absolute; top: 0; right: 0; background: #1d4ed8; color: white; font-size: 9px; font-weight: 800; text-align: center; padding: 5px 8px; border-radius: 0 14px 0 10px; line-height: 1.3; }
+  .plan-card-body { padding: 14px; }
+  .plan-card-top { display: flex; align-items: flex-start; gap: 10px; margin-bottom: 10px; padding-right: 52px; }
+  .insurer-logo-box { width: 48px; height: 32px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+  .insurer-logo-text { font-size: 13px; font-weight: 800; color: #1d4ed8; }
+  .plan-card-names { flex: 1; }
+  .plan-name-big { font-size: 15px; font-weight: 800; color: #0f172a; }
+  .plan-provider { font-size: 11px; color: #64748b; margin-top: 2px; border-top: 1px dashed #e2e8f0; padding-top: 4px; }
+  .no-exit-badge { display: inline-flex; align-items: center; gap: 4px; border: 1.5px dashed #16a34a; border-radius: 20px; padding: 3px 9px; font-size: 10px; font-weight: 700; color: #16a34a; margin-top: 6px; }
+  .payout-row { display: flex; align-items: baseline; justify-content: space-between; padding: 10px 0; border-top: 1px dashed #e2e8f0; border-bottom: 1px dashed #e2e8f0; margin-bottom: 10px; }
+  .payout-label { font-size: 12px; color: #64748b; text-decoration: underline; text-decoration-style: dotted; }
+  .payout-amount { font-size: 18px; font-weight: 800; color: #0f172a; }
+  .accordion-row { border: 1.5px solid #e2e8f0; border-radius: 10px; margin-bottom: 8px; }
+  .accordion-header { display: flex; justify-content: space-between; align-items: center; padding: 11px 14px; cursor: pointer; }
+  .accordion-title { font-size: 13px; font-weight: 700; color: #0f172a; }
+  .accordion-chevron { font-size: 14px; color: #94a3b8; transition: transform 0.2s; }
+  .accordion-body { padding: 0 14px 12px; display: none; }
+  .accordion-body.open { display: block; }
+  .accordion-body li { font-size: 11px; color: #475569; padding: 3px 0; padding-left: 12px; position: relative; }
+  .accordion-body li::before { content: '•'; position: absolute; left: 0; color: #1d4ed8; }
+  .plan-card-actions { display: flex; gap: 8px; padding: 10px 14px 0; border-top: 1px solid #f1f5f9; }
+  .detail-btn { flex: 1; border: 1.5px solid #1d4ed8; border-radius: 10px; padding: 9px; text-align: center; font-size: 12px; font-weight: 700; color: #1d4ed8; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 5px; }
+  .buy-btn { background: #f59e0b; color: white; border-radius: 10px; padding: 13px; text-align: center; font-size: 14px; font-weight: 800; margin: 10px 14px 14px; cursor: pointer; }
+  .buy-btn:active { opacity: 0.9; }
+  .plan-card-2 { background: white; border-radius: 14px; margin: 0 16px 12px; box-shadow: 0 2px 8px rgba(0,0,0,0.08); overflow: hidden; opacity: 0.85; }
+
+  .prog-bar { height: 3px; background: #eef2f8; flex-shrink: 0; }
+  .prog-fill { height: 100%; background: linear-gradient(to right, #1d4ed8, #3b82f6); border-radius: 0 2px 2px 0; }
+  .step-dots { display: flex; align-items: center; padding: 8px 14px 4px; background: white; border-bottom: 1px solid #eef2f8; flex-shrink: 0; }
+  .sdot-wrap { display: flex; flex-direction: column; align-items: center; flex: 1; }
+  .sdot { width: 20px; height: 20px; border-radius: 50%; font-size: 9px; font-weight: 700; display: flex; align-items: center; justify-content: center; }
+  .sdone { background: #16a34a; color: white; }
+  .sact { background: #1d4ed8; color: white; box-shadow: 0 0 0 3px rgba(29,78,216,0.2); }
+  .stodo { background: #e2e8f0; color: #94a3b8; }
+  .sdot-label { font-size: 7px; margin-top: 2px; text-align: center; color: #94a3b8; }
+  .sdot-label.act { color: #1d4ed8; font-weight: 700; }
+  .sline { flex: 1; height: 2px; margin-top: -12px; }
+  .sline-done { background: #16a34a; }
+  .sline-todo { background: #e2e8f0; }
+  .fund-card { background: white; border-radius: 14px; margin: 0 16px 10px; padding: 14px; border: 2px solid #e2e8f0; cursor: pointer; }
+  .fund-card.sel { border-color: #1d4ed8; background: #f0f5ff; }
+  .fund-card-top { display: flex; align-items: center; gap: 8px; margin-bottom: 6px; }
+  .fund-name { font-size: 15px; font-weight: 700; color: #0f172a; flex: 1; }
+  .fund-desc { font-size: 11px; color: #64748b; margin-bottom: 10px; line-height: 1.4; }
+  .fund-returns { display: flex; gap: 6px; }
+  .fund-ret { flex: 1; background: #f8fafc; border-radius: 8px; padding: 6px; text-align: center; }
+  .fund-ret-val { font-size: 13px; font-weight: 700; color: #1d4ed8; }
+  .fund-ret-label { font-size: 9px; color: #94a3b8; margin-top: 1px; }
+  .check-circle { width: 22px; height: 22px; border-radius: 50%; background: #1d4ed8; color: white; font-size: 11px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+  .empty-circle { width: 22px; height: 22px; border-radius: 50%; border: 2px solid #e2e8f0; flex-shrink: 0; }
+  .plan-strip { background: #1d4ed8; margin: 0 16px 12px; border-radius: 12px; padding: 10px 14px; color: white; display: flex; justify-content: space-between; align-items: center; }
+  .upload-zone { border: 2px dashed #93c5fd; border-radius: 12px; padding: 14px; text-align: center; background: #f0f7ff; cursor: pointer; margin-bottom: 6px; }
+  .upload-zone.done { border-color: #86efac; background: #f0fdf4; }
+  .doc-pair { display: flex; gap: 8px; }
+  .doc-pair .upload-zone { flex: 1; }
+  .verify-section { background: white; border-radius: 14px; margin: 0 16px 10px; overflow: hidden; box-shadow: 0 1px 4px rgba(0,0,0,0.05); }
+  .verify-header { padding: 12px 14px; border-bottom: 1px solid #f1f5f9; display: flex; justify-content: space-between; align-items: center; }
+  .verify-header h4 { font-size: 13px; font-weight: 700; color: #0f172a; }
+  .edit-link { font-size: 12px; color: #1d4ed8; font-weight: 600; cursor: pointer; }
+  .verify-row { display: flex; justify-content: space-between; padding: 10px 14px; border-bottom: 1px solid #f8fafc; }
+  .verify-row:last-child { border: none; }
+  .verify-key { font-size: 12px; color: #64748b; }
+  .verify-val { font-size: 12px; font-weight: 600; color: #0f172a; }
+  .sig-box { border: 2px dashed #c4b5fd; border-radius: 12px; height: 80px; background: #faf5ff; display: flex; align-items: center; justify-content: center; cursor: pointer; margin: 0 16px 8px; }
+  .pay-method { background: white; border-radius: 14px; margin: 0 16px 10px; overflow: hidden; }
+  .pay-option { display: flex; align-items: center; gap: 12px; padding: 14px; border-bottom: 1px solid #f8fafc; cursor: pointer; }
+  .pay-option:last-child { border: none; }
+  .pay-option.sel { background: #f0f5ff; }
+  .radio { width: 18px; height: 18px; border-radius: 50%; border: 2px solid #e2e8f0; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+  .radio.sel { border-color: #1d4ed8; }
+  .radio-dot { width: 8px; height: 8px; border-radius: 50%; background: #1d4ed8; }
+  .pay-info h5 { font-size: 13px; font-weight: 700; color: #0f172a; }
+  .pay-info p { font-size: 11px; color: #64748b; margin-top: 1px; }
+  .card-input { background: #f8fafc; border: 1.5px solid #e2e8f0; border-radius: 10px; padding: 11px 13px; font-size: 13px; color: #94a3b8; margin-bottom: 8px; }
+  .card-row { display: flex; gap: 8px; }
+  .order-row { display: flex; justify-content: space-between; padding: 10px 14px; border-bottom: 1px solid #f8fafc; }
+  .order-row:last-child { border: none; }
+  .order-row span { font-size: 13px; color: #64748b; }
+  .order-row strong { font-size: 13px; color: #0f172a; }
+  .conf-hero { background: linear-gradient(135deg, #0f766e, #134e4a); padding: 28px 20px; text-align: center; color: white; flex-shrink: 0; }
+  .conf-check { width: 64px; height: 64px; background: rgba(255,255,255,0.2); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 32px; margin: 0 auto 12px; }
+  .timeline-item { display: flex; gap: 12px; padding: 10px 0; border-bottom: 1px solid #f1f5f9; }
+  .timeline-item:last-child { border: none; }
+  .tl-dot { width: 24px; height: 24px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 10px; font-weight: 700; flex-shrink: 0; }
+  .tl-done { background: #16a34a; color: white; }
+  .tl-pending { background: #e2e8f0; color: #94a3b8; }
+  .tl-text h5 { font-size: 13px; font-weight: 700; color: #0f172a; }
+  .tl-text p { font-size: 11px; color: #64748b; margin-top: 2px; }
+  .coins-card { background: white; border-radius: 14px; margin: 0 16px 10px; padding: 14px; border: 2px solid #fcd34d; display: flex; gap: 12px; align-items: center; }
+  .sect-label { font-size: 11px; font-weight: 700; color: #64748b; text-transform: uppercase; letter-spacing: 0.5px; padding: 10px 16px 5px; }
+  .tip-box { background: #eff6ff; border-radius: 10px; padding: 10px 12px; margin: 0 16px 10px; display: flex; gap: 8px; }
+  .tip-box p { font-size: 11px; color: #1e40af; line-height: 1.4; }
+  .iframe-indicator { margin: 8px 16px 0; background: #fffbeb; border: 1.5px solid #fcd34d; border-radius: 10px; padding: 7px 12px; display: flex; align-items: center; gap: 8px; flex-shrink: 0; }
+  .iframe-indicator p { font-size: 11px; color: #92400e; font-weight: 600; }
+
+  .nav-pills { display: flex; gap: 6px; flex-wrap: wrap; justify-content: center; max-width: 375px; }
+  .npill { padding: 5px 12px; border-radius: 20px; font-size: 11px; font-weight: 600; cursor: pointer; border: 1.5px solid rgba(255,255,255,0.3); color: rgba(255,255,255,0.6); background: transparent; transition: all 0.15s; }
+  .npill.npill-active { background: rgba(255,255,255,0.9); color: #1a2340; border-color: white; }
+
+  @media (max-width: 420px) {
+    .phone-shell { width: 92vw; height: 80vh; max-height: 720px; border-radius: 32px; border-width: 6px; }
+  }
+</style>
+</head>
+<body>
+
+<div class="page-title">myAlfred × Savings Plan — Interactive Prototype</div>
+<div class="page-sub">Tap through the phone, or use the pills below to jump to any screen</div>
+
+<div class="phone-shell">
+  <div class="notch-bar"><div class="notch"><div class="notch-cam"></div><div class="notch-mic"></div><div class="notch-cam"></div></div></div>
+  <div class="screen-container">
+
+    <!-- S0: HOME -->
+    <div class="screen active" id="sc0">
+      <div class="alfred-header">
+        <div style="display:flex;align-items:center;gap:8px;">
+          <div style="width:34px;height:34px;background:#dbeafe;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:18px;">🧑‍💼</div>
+          <div><div class="alfred-logo-text">myAlfred</div><div class="alfred-logo-sub">premium</div></div>
+        </div>
+        <div style="width:36px;height:36px;border-radius:50%;border:1.5px solid #e2e8f0;display:flex;align-items:center;justify-content:center;font-size:18px;">🔔</div>
+      </div>
+      <div class="scroll-content">
+        <div class="home-banner" onclick="go(1)">
+          <div class="home-banner-eyebrow">✨ NEW — Savings Plans</div>
+          <h2>Grow Your Money with Alfred</h2>
+          <p>Start from AED 500/mo. See your wealth compound.</p>
+          <div class="home-banner-cta">Calculate Now →</div>
+        </div>
+        <div class="stats-row">
+          <div class="stat-chip"><div class="stat-chip-num">4.8★</div><div class="stat-chip-label">30K reviews</div></div>
+          <div class="stat-chip"><div class="stat-chip-num">40+</div><div class="stat-chip-label">Insurers</div></div>
+          <div class="stat-chip"><div class="stat-chip-num">200K+</div><div class="stat-chip-label">Policyholders</div></div>
+        </div>
+        <div style="font-size:11px;font-weight:700;color:#64748b;text-transform:uppercase;letter-spacing:0.5px;padding:4px 16px 6px;">Buy Insurance</div>
+        <div class="buy-grid">
+          <div class="buy-tile" onclick="go(1)"><div class="buy-tile-icon">🚗</div><h4>Car</h4><p>Quotes in 30 sec</p></div>
+          <div class="buy-tile" onclick="go(1)"><div class="buy-tile-icon">✈️</div><h4>Travel</h4><p>Instant policy</p></div>
+          <div class="buy-tile" onclick="go(1)"><div class="buy-tile-icon">🏠</div><h4>Home</h4><p>Protect home</p></div>
+          <div class="buy-tile highlight" onclick="go(1)"><div style="margin-bottom:4px;"><span style="background:#fef3c7;color:#d97706;font-size:10px;font-weight:700;padding:2px 8px;border-radius:20px;">NEW</span></div><div class="buy-tile-icon">📈</div><h4>Savings</h4><p>Build wealth</p></div>
+        </div>
+      </div>
+      <div class="bottom-nav">
+        <div class="bnav active"><div class="bnav-icon">🏠</div><div class="bnav-label">Home</div><div class="bnav-dot"></div></div>
+        <div class="bnav"><div class="bnav-icon">👜</div><div class="bnav-label">Wallet</div></div>
+        <div class="bnav"><div class="bnav-icon">🎮</div><div class="bnav-label">Earn Coins</div></div>
+        <div class="bnav"><div class="bnav-icon">🏆</div><div class="bnav-label">Rewards</div></div>
+        <div class="bnav"><div class="bnav-icon">👤</div><div class="bnav-label">Profile</div></div>
+      </div>
+    </div>
+
+    <!-- S1: CALCULATOR -->
+    <div class="screen" id="sc1">
+      <div class="status"><span>10:57</span><span>●●● 🔋</span></div>
+      <div class="topnav">
+        <div class="back-btn" onclick="go(0)"><svg viewBox="0 0 24 24" fill="none" stroke="#1d4ed8" stroke-width="2.5"><path d="M19 12H5M12 5l-7 7 7 7"/></svg></div>
+        <span class="topnav-title">Savings Calculator</span>
+      </div>
+      <div class="prog-bar"><div class="prog-fill" style="width:14%"></div></div>
+      <div class="scroll-content" style="padding-top:10px;">
+        <div class="mode-toggle">
+          <div class="mode-btn on" id="mA" onclick="setMode('A')">I Want to Invest</div>
+          <div class="mode-btn" id="mB" onclick="setMode('B')">Reach a Goal</div>
+        </div>
+        <div class="card">
+          <div class="slider-wrap">
+            <label>Monthly Amount <strong>AED 500</strong></label>
+            <div class="fake-slider" onclick="bump(this)"><div class="fake-slider-fill" style="width:30%"></div><div class="fake-slider-thumb" style="left:calc(30% - 9px)"></div></div>
+          </div>
+          <div class="slider-wrap">
+            <label>Payment Term <strong id="dv">5 Years</strong></label>
+            <div class="fake-slider" onclick="bumpDur(this)"><div class="fake-slider-fill" style="width:25%"></div><div class="fake-slider-thumb" style="left:calc(25% - 9px)"></div></div>
+          </div>
+          <div class="slider-wrap" style="margin-bottom:0;">
+            <label>Rate of Return <strong>8% p.a.</strong></label>
+            <div class="fake-slider" onclick="bump(this)"><div class="fake-slider-fill" style="width:53%"></div><div class="fake-slider-thumb" style="left:calc(53% - 9px)"></div></div>
+          </div>
+        </div>
+        <div class="result-box" style="margin:0 16px 10px;">
+          <div style="font-size:12px;color:#065f46;margin-bottom:4px;">Lumpsum Payout at Maturity</div>
+          <div class="result-amount">AED 31,065</div>
+          <div class="result-breakdown">
+            <div class="rb"><div class="rb-val" style="color:#1d4ed8;">AED 30K</div><div class="rb-label">You invest</div></div>
+            <div class="rb"><div class="rb-val" style="color:#f59e0b;">+</div></div>
+            <div class="rb"><div class="rb-val" style="color:#16a34a;">AED 1,065</div><div class="rb-label">Growth</div></div>
+          </div>
+        </div>
+        <div class="card" style="padding:12px;">
+          <div style="font-size:12px;font-weight:700;color:#0f172a;margin-bottom:10px;">📊 Growth over time</div>
+          <div class="chart-bars">
+            <div class="bar-col"><div class="bar-fill" style="height:20px;"></div><div class="bar-lbl">Y1</div></div>
+            <div class="bar-col"><div class="bar-fill" style="height:32px;"></div><div class="bar-lbl">Y2</div></div>
+            <div class="bar-col"><div class="bar-fill" style="height:44px;"></div><div class="bar-lbl">Y3</div></div>
+            <div class="bar-col"><div class="bar-fill" style="height:56px;"></div><div class="bar-lbl">Y4</div></div>
+            <div class="bar-col"><div class="bar-fill" style="height:70px;background:linear-gradient(to top,#f59e0b,#fbbf24);"></div><div class="bar-lbl">Y5</div></div>
+          </div>
+        </div>
+        <div style="font-size:10px;color:#94a3b8;text-align:center;padding:0 16px 12px;">Projections are illustrative. Actual returns may vary.</div>
+        <div style="padding:0 16px 16px;"><div class="btn-primary" style="background:#f59e0b;color:white;" onclick="go(2)">See Matched Plans →</div></div>
+      </div>
+    </div>
+
+    <!-- S2: QUOTES -->
+    <div class="screen" id="sc2">
+      <div class="status"><span>10:57</span><span>●●● 🔋</span></div>
+      <div class="q-topbar">
+        <div class="q-customer-row">
+          <div class="q-customer-name">Akash Sharma</div>
+          <div class="q-edit-btn">Edit ✏️</div>
+        </div>
+        <div class="q-params">
+          <div class="q-param-row"><span class="q-param-label">Currency</span>&nbsp;<span class="q-param-val">AED</span></div>
+          <div class="q-param-row"><span class="q-param-label">Investment Amount</span>&nbsp;<span class="q-param-val">500</span></div>
+          <div class="q-param-row"><span class="q-param-label">Payment Frequency</span>&nbsp;<span class="q-param-val">Monthly</span></div>
+          <div class="q-param-row"><span class="q-param-label">Payment Term</span>&nbsp;<span class="q-param-val">5 Years</span></div>
+        </div>
+      </div>
+      <div class="q-steps">
+        <div class="qs-item"><div class="qs-dot qs-done">✓</div><div class="qs-label">Fill Form</div></div>
+        <div class="qs-line qs-line-done"></div>
+        <div class="qs-item"><div class="qs-dot qs-active">2</div><div class="qs-label act">View Plans</div></div>
+        <div class="qs-line qs-line-todo"></div>
+        <div class="qs-item"><div class="qs-dot qs-todo">3</div><div class="qs-label">Upload Document</div></div>
+      </div>
+      <div class="scroll-content">
+        <div class="calc-banner" onclick="go(1)">
+          <div class="calc-banner-left"><div class="calc-banner-icon">🧮</div><div class="calc-banner-text">Savings Calculator</div></div>
+          <div class="calc-banner-arrow">›</div>
+        </div>
+        <div class="select-heading">
+          <div class="select-heading-avatar">🧑‍💼</div>
+          <h2>Select a Saving Plan</h2>
+        </div>
+
+        <div class="plan-card">
+          <div class="instant-ribbon">INSTANT<br>POLICY</div>
+          <div class="plan-card-body">
+            <div class="plan-card-top">
+              <div class="insurer-logo-box"><div class="insurer-logo-text">𝒮UKOON</div></div>
+              <div class="plan-card-names">
+                <div class="plan-name-big">Purple Investment Plan</div>
+                <div class="no-exit-badge">✅ No Exit Charges</div>
+                <div class="plan-provider">Sukoon (Oman Insurance)</div>
+              </div>
+            </div>
+            <div class="payout-row">
+              <span class="payout-label">Lumpsum Payout</span>
+              <span class="payout-amount">AED 31,065.00</span>
+            </div>
+            <div class="accordion-row">
+              <div class="accordion-header" onclick="toggleAcc(this)"><span class="accordion-title">Eligibility</span><span class="accordion-chevron">⌄</span></div>
+              <div class="accordion-body"><ul><li>Age 18–60 years</li><li>UAE resident or citizen</li><li>Valid Emirates ID required</li><li>Minimum AED 500/month</li></ul></div>
+            </div>
+            <div class="accordion-row">
+              <div class="accordion-header" onclick="toggleAcc(this)"><span class="accordion-title">Included Benefits</span><span class="accordion-chevron">⌄</span></div>
+              <div class="accordion-body"><ul><li>Lumpsum payout at maturity</li><li>No exit charges</li><li>Flexible fund switching via Sukoon app</li><li>Optional life cover add-on</li><li>Shariah-compliant option available</li></ul></div>
+            </div>
+          </div>
+          <div class="plan-card-actions">
+            <div class="detail-btn">📋 Fund details</div>
+            <div class="detail-btn">📄 Plan details</div>
+          </div>
+          <div class="buy-btn" onclick="go(3)">Buy Now</div>
+        </div>
+
+        <div class="plan-card plan-card-2">
+          <div class="plan-card-body">
+            <div class="plan-card-top">
+              <div class="insurer-logo-box"><div style="font-size:12px;font-weight:800;color:#d97706;">ZURICH</div></div>
+              <div class="plan-card-names">
+                <div class="plan-name-big">Vista Investment Plan</div>
+                <div class="plan-provider">Zurich International Life</div>
+              </div>
+            </div>
+            <div class="payout-row"><span class="payout-label">Lumpsum Payout</span><span class="payout-amount">AED 29,840.00</span></div>
+            <div class="accordion-row">
+              <div class="accordion-header" onclick="toggleAcc(this)"><span class="accordion-title">Eligibility</span><span class="accordion-chevron">⌄</span></div>
+              <div class="accordion-body"><ul><li>Age 18–65 years</li><li>UAE resident</li><li>Min AED 500/month</li></ul></div>
+            </div>
+            <div class="accordion-row">
+              <div class="accordion-header" onclick="toggleAcc(this)"><span class="accordion-title">Included Benefits</span><span class="accordion-chevron">⌄</span></div>
+              <div class="accordion-body"><ul><li>150+ global funds</li><li>Lumpsum at maturity</li><li>Partial withdrawals from year 3</li></ul></div>
+            </div>
+          </div>
+          <div class="plan-card-actions">
+            <div class="detail-btn">📋 Fund details</div>
+            <div class="detail-btn">📄 Plan details</div>
+          </div>
+          <div class="buy-btn" onclick="go(3)">Buy Now</div>
+        </div>
+        <div style="height:16px;"></div>
+      </div>
+    </div>
+
+    <!-- S3: FUND SELECTION -->
+    <div class="screen" id="sc3">
+      <div class="status"><span>10:57</span><span>●●● 🔋</span></div>
+      <div class="topnav">
+        <div class="back-btn" onclick="go(2)"><svg viewBox="0 0 24 24" fill="none" stroke="#1d4ed8" stroke-width="2.5"><path d="M19 12H5M12 5l-7 7 7 7"/></svg></div>
+        <span class="topnav-title">Select Your Fund</span>
+        <span style="background:#fef9c3;color:#a16207;border:1px solid #fcd34d;font-size:10px;font-weight:700;padding:2px 8px;border-radius:20px;">Sukoon</span>
+      </div>
+      <div class="prog-bar"><div class="prog-fill" style="width:50%"></div></div>
+      <div class="step-dots">
+        <div class="sdot-wrap"><div class="sdot sdone">✓</div><div class="sdot-label">Calc</div></div><div class="sline sline-done"></div>
+        <div class="sdot-wrap"><div class="sdot sdone">✓</div><div class="sdot-label">Plans</div></div><div class="sline sline-done"></div>
+        <div class="sdot-wrap"><div class="sdot sact">3</div><div class="sdot-label act">Fund</div></div><div class="sline sline-todo"></div>
+        <div class="sdot-wrap"><div class="sdot stodo">4</div><div class="sdot-label">Docs</div></div><div class="sline sline-todo"></div>
+        <div class="sdot-wrap"><div class="sdot stodo">5</div><div class="sdot-label">Verify</div></div><div class="sline sline-todo"></div>
+        <div class="sdot-wrap"><div class="sdot stodo">6</div><div class="sdot-label">Pay</div></div>
+      </div>
+      <div class="iframe-indicator"><span style="font-size:14px;">🔗</span><p>Powered by Sukoon Insurance · Regulated by UAE Central Bank</p></div>
+      <div class="scroll-content" style="padding-top:8px;">
+        <div class="mode-toggle" style="margin-top:4px;"><div class="mode-btn on">Model Portfolio</div><div class="mode-btn">Build My Own</div></div>
+        <div class="fund-card sel" id="f0" onclick="pickFund(0)">
+          <div class="fund-card-top"><div class="fund-name">Dynamic</div><span style="background:#fee2e2;color:#dc2626;font-size:10px;font-weight:700;padding:2px 8px;border-radius:20px;">High risk</span><div class="check-circle" id="fc0">✓</div></div>
+          <div class="fund-desc">Maximises returns via equity funds. Higher volatility, higher potential.</div>
+          <div class="fund-returns"><div class="fund-ret"><div class="fund-ret-val">11.65%</div><div class="fund-ret-label">1 Year</div></div><div class="fund-ret"><div class="fund-ret-val">12.12%</div><div class="fund-ret-label">3 Years</div></div><div class="fund-ret"><div class="fund-ret-val">10.38%</div><div class="fund-ret-label">5 Years</div></div></div>
+        </div>
+        <div class="fund-card" id="f1" onclick="pickFund(1)">
+          <div class="fund-card-top"><div class="fund-name">Balanced</div><span style="background:#fef3c7;color:#d97706;font-size:10px;font-weight:700;padding:2px 8px;border-radius:20px;">Medium risk</span><div class="empty-circle" id="fc1"></div></div>
+          <div class="fund-desc">60% equity, 40% bonds. Growth balanced with stability.</div>
+          <div class="fund-returns"><div class="fund-ret"><div class="fund-ret-val">11.65%</div><div class="fund-ret-label">1 Year</div></div><div class="fund-ret"><div class="fund-ret-val">12.12%</div><div class="fund-ret-label">3 Years</div></div><div class="fund-ret"><div class="fund-ret-val">10.38%</div><div class="fund-ret-label">5 Years</div></div></div>
+        </div>
+        <div class="fund-card" id="f2" onclick="pickFund(2)">
+          <div class="fund-card-top"><div class="fund-name">Conservative</div><span style="background:#dcfce7;color:#16a34a;font-size:10px;font-weight:700;padding:2px 8px;border-radius:20px;">Low risk</span><div class="empty-circle" id="fc2"></div></div>
+          <div class="fund-desc">Capital protection with higher bonds allocation.</div>
+          <div class="fund-returns"><div class="fund-ret"><div class="fund-ret-val">18.73%</div><div class="fund-ret-label">1 Year</div></div><div class="fund-ret"><div class="fund-ret-val">13.99%</div><div class="fund-ret-label">3 Years</div></div><div class="fund-ret"><div class="fund-ret-val">—</div><div class="fund-ret-label">5 Years</div></div></div>
+        </div>
+        <div style="padding:0 16px 16px;"><div class="btn-primary btn-blue" id="fundCTA" onclick="go(4)">Proceed with Dynamic →</div></div>
+      </div>
+    </div>
+
+    <!-- S4: UPLOAD DOCS -->
+    <div class="screen" id="sc4">
+      <div class="status"><span>10:57</span><span>●●● 🔋</span></div>
+      <div class="topnav"><div class="back-btn" onclick="go(3)"><svg viewBox="0 0 24 24" fill="none" stroke="#1d4ed8" stroke-width="2.5"><path d="M19 12H5M12 5l-7 7 7 7"/></svg></div><span class="topnav-title">Upload Documents</span></div>
+      <div class="prog-bar"><div class="prog-fill" style="width:66%"></div></div>
+      <div class="step-dots">
+        <div class="sdot-wrap"><div class="sdot sdone">✓</div><div class="sdot-label">Calc</div></div><div class="sline sline-done"></div>
+        <div class="sdot-wrap"><div class="sdot sdone">✓</div><div class="sdot-label">Plans</div></div><div class="sline sline-done"></div>
+        <div class="sdot-wrap"><div class="sdot sdone">✓</div><div class="sdot-label">Fund</div></div><div class="sline sline-done"></div>
+        <div class="sdot-wrap"><div class="sdot sact">4</div><div class="sdot-label act">Docs</div></div><div class="sline sline-todo"></div>
+        <div class="sdot-wrap"><div class="sdot stodo">5</div><div class="sdot-label">Verify</div></div><div class="sline sline-todo"></div>
+        <div class="sdot-wrap"><div class="sdot stodo">6</div><div class="sdot-label">Pay</div></div>
+      </div>
+      <div class="scroll-content" style="padding-top:10px;">
+        <div class="plan-strip"><div><div style="font-size:13px;font-weight:700;">Purple Investment Plan</div><div style="font-size:11px;opacity:0.8;margin-top:1px;">Sukoon · Dynamic · AED 500/mo</div></div><div style="text-align:right;"><div style="font-size:16px;font-weight:800;">AED 31,065</div><div style="font-size:10px;opacity:0.8;">Lumpsum payout</div></div></div>
+        <div class="tip-box"><span style="font-size:14px;">📷</span><p>Use your camera for best results. Documents are securely encrypted.</p></div>
+        <div style="padding:0 16px;">
+          <div style="font-size:13px;font-weight:700;margin-bottom:8px;">Passport <span style="color:#dc2626;">*</span></div>
+          <div class="doc-pair" style="margin-bottom:14px;">
+            <div class="upload-zone done" onclick="toggleDoc(this)"><div style="font-size:22px;">✅</div><div style="font-size:12px;color:#16a34a;font-weight:700;">Page 1 uploaded</div></div>
+            <div class="upload-zone" onclick="toggleDoc(this)"><div style="font-size:22px;">📤</div><div style="font-size:12px;color:#3b82f6;font-weight:600;">Page 2</div><div style="font-size:10px;color:#94a3b8;margin-top:2px;">PDF · JPG · PNG</div></div>
+          </div>
+          <div style="font-size:13px;font-weight:700;margin-bottom:8px;">Emirates ID (both sides) <span style="color:#dc2626;">*</span></div>
+          <div class="doc-pair" style="margin-bottom:14px;">
+            <div class="upload-zone" onclick="toggleDoc(this)"><div style="font-size:22px;">📤</div><div style="font-size:12px;color:#3b82f6;font-weight:600;">Front side</div><div style="font-size:10px;color:#94a3b8;margin-top:2px;">PDF · JPG · PNG</div></div>
+            <div class="upload-zone" onclick="toggleDoc(this)"><div style="font-size:22px;">📤</div><div style="font-size:12px;color:#3b82f6;font-weight:600;">Back side</div><div style="font-size:10px;color:#94a3b8;margin-top:2px;">PDF · JPG · PNG</div></div>
+          </div>
+          <div class="btn-primary btn-green" onclick="go(5)">Upload & Continue →</div>
+        </div>
+        <div style="height:16px;"></div>
+      </div>
+    </div>
+
+    <!-- S5: VERIFY -->
+    <div class="screen" id="sc5">
+      <div class="status"><span>10:57</span><span>●●● 🔋</span></div>
+      <div class="topnav"><div class="back-btn" onclick="go(4)"><svg viewBox="0 0 24 24" fill="none" stroke="#1d4ed8" stroke-width="2.5"><path d="M19 12H5M12 5l-7 7 7 7"/></svg></div><span class="topnav-title">Verify Your Details</span></div>
+      <div class="prog-bar"><div class="prog-fill" style="width:80%"></div></div>
+      <div class="step-dots">
+        <div class="sdot-wrap"><div class="sdot sdone">✓</div><div class="sdot-label">Calc</div></div><div class="sline sline-done"></div>
+        <div class="sdot-wrap"><div class="sdot sdone">✓</div><div class="sdot-label">Plans</div></div><div class="sline sline-done"></div>
+        <div class="sdot-wrap"><div class="sdot sdone">✓</div><div class="sdot-label">Fund</div></div><div class="sline sline-done"></div>
+        <div class="sdot-wrap"><div class="sdot sdone">✓</div><div class="sdot-label">Docs</div></div><div class="sline sline-done"></div>
+        <div class="sdot-wrap"><div class="sdot sact">5</div><div class="sdot-label act">Verify</div></div><div class="sline sline-todo"></div>
+        <div class="sdot-wrap"><div class="sdot stodo">6</div><div class="sdot-label">Pay</div></div>
+      </div>
+      <div class="scroll-content" style="padding-top:10px;">
+        <div class="tip-box" style="background:#f0fdf4;"><span>✅</span><p style="color:#166534;">Auto-filled from your profile and uploaded documents.</p></div>
+        <div class="verify-section">
+          <div class="verify-header"><h4>Personal Details</h4><span class="edit-link">Edit</span></div>
+          <div class="verify-row"><span class="verify-key">Full name</span><span class="verify-val">Akash Sharma</span></div>
+          <div class="verify-row"><span class="verify-key">Date of birth</span><span class="verify-val">01 Jan 1990</span></div>
+          <div class="verify-row"><span class="verify-key">Nationality</span><span class="verify-val">Indian</span></div>
+          <div class="verify-row"><span class="verify-key">Email</span><span class="verify-val" style="font-size:11px;">akash.sharma@myalfred.com</span></div>
+          <div class="verify-row"><span class="verify-key">Phone</span><span class="verify-val">+971 5X XXX XXXX</span></div>
+        </div>
+        <div class="verify-section">
+          <div class="verify-header"><h4>Plan Summary</h4><span class="edit-link" onclick="go(2)">Change</span></div>
+          <div class="verify-row"><span class="verify-key">Plan</span><span class="verify-val">Purple Investment</span></div>
+          <div class="verify-row"><span class="verify-key">Provider</span><span class="verify-val">Sukoon Insurance</span></div>
+          <div class="verify-row"><span class="verify-key">Portfolio</span><span class="verify-val">Dynamic</span></div>
+          <div class="verify-row"><span class="verify-key">Monthly</span><span class="verify-val">AED 500</span></div>
+          <div class="verify-row"><span class="verify-key">Term</span><span class="verify-val">5 Years</span></div>
+          <div class="verify-row"><span class="verify-key">Lumpsum Payout</span><span class="verify-val" style="color:#16a34a;font-weight:700;">AED 31,065</span></div>
+        </div>
+        <div style="padding:0 16px 16px;"><div class="btn-primary" style="background:#7c3aed;color:white;" onclick="go(6)">Confirm & Sign →</div></div>
+      </div>
+    </div>
+
+    <!-- S6: SIGN & PAY -->
+    <div class="screen" id="sc6">
+      <div class="status"><span>10:57</span><span>●●● 🔋</span></div>
+      <div class="topnav"><div class="back-btn" onclick="go(5)"><svg viewBox="0 0 24 24" fill="none" stroke="#1d4ed8" stroke-width="2.5"><path d="M19 12H5M12 5l-7 7 7 7"/></svg></div><span class="topnav-title">Sign & Pay</span></div>
+      <div class="prog-bar"><div class="prog-fill" style="width:92%"></div></div>
+      <div class="step-dots">
+        <div class="sdot-wrap"><div class="sdot sdone">✓</div><div class="sdot-label">Calc</div></div><div class="sline sline-done"></div>
+        <div class="sdot-wrap"><div class="sdot sdone">✓</div><div class="sdot-label">Plans</div></div><div class="sline sline-done"></div>
+        <div class="sdot-wrap"><div class="sdot sdone">✓</div><div class="sdot-label">Fund</div></div><div class="sline sline-done"></div>
+        <div class="sdot-wrap"><div class="sdot sdone">✓</div><div class="sdot-label">Docs</div></div><div class="sline sline-done"></div>
+        <div class="sdot-wrap"><div class="sdot sdone">✓</div><div class="sdot-label">Verify</div></div><div class="sline sline-done"></div>
+        <div class="sdot-wrap"><div class="sdot sact">6</div><div class="sdot-label act">Pay</div></div>
+      </div>
+      <div class="scroll-content" style="padding-top:10px;">
+        <div class="sect-label">Your Signature</div>
+        <div class="sig-box"><p>✍️  Draw your signature here</p></div>
+        <div style="text-align:center;margin-bottom:12px;font-size:11px;color:#8b5cf6;font-weight:600;">or upload signature image</div>
+        <div class="sect-label">Order Summary</div>
+        <div class="verify-section" style="margin-bottom:10px;">
+          <div class="order-row"><span>Purple Investment Plan</span><strong>AED 500/mo</strong></div>
+          <div class="order-row"><span>Term</span><strong>5 Years</strong></div>
+          <div class="order-row"><span>Lumpsum payout</span><strong style="color:#16a34a;">AED 31,065</strong></div>
+          <div class="order-row" style="border:none;"><span style="font-weight:700;color:#0f172a;">First payment today</span><strong style="color:#1d4ed8;">AED 500</strong></div>
+        </div>
+        <div class="sect-label">Payment Method</div>
+        <div class="pay-method">
+          <div class="pay-option sel"><div class="radio sel"><div class="radio-dot"></div></div><span style="font-size:20px;">💳</span><div class="pay-info"><h5>Credit / Debit Card</h5><p>Visa · Mastercard · AMEX</p></div></div>
+          <div class="pay-option"><div class="radio"></div><span style="font-size:20px;">🏦</span><div class="pay-info"><h5>Bank Transfer</h5><p>UAE local transfer</p></div></div>
+        </div>
+        <div style="padding:0 16px;">
+          <div class="card-input">•••• •••• •••• 4242</div>
+          <div class="card-row"><div class="card-input" style="flex:1;">MM / YY</div><div class="card-input" style="flex:1;">CVV •••</div></div>
+          <div class="card-input">Akash Sharma</div>
+          <div style="font-size:10px;color:#94a3b8;text-align:center;margin-bottom:12px;">🔒 256-bit SSL · AED 500 monthly direct debit authorised</div>
+          <div class="btn-primary btn-teal" onclick="go(7)">🔒 Pay AED 500 & Start Saving</div>
+        </div>
+        <div style="height:16px;"></div>
+      </div>
+    </div>
+
+    <!-- S7: CONFIRMATION -->
+    <div class="screen" id="sc7">
+      <div class="conf-hero">
+        <div class="conf-check">🎉</div>
+        <div style="font-size:22px;font-weight:800;margin-bottom:6px;">Policy Issued!</div>
+        <div style="font-size:13px;opacity:0.85;">Your savings journey starts now, Akash.</div>
+      </div>
+      <div class="scroll-content" style="padding-top:12px;">
+        <div class="card">
+          <div style="font-size:11px;font-weight:700;color:#64748b;text-transform:uppercase;letter-spacing:0.4px;margin-bottom:10px;">What Happens Next</div>
+          <div class="timeline-item"><div class="tl-dot tl-done">✓</div><div class="tl-text"><h5>Policy No: SUKOON-2026-8472</h5><p>Issued · 17 Jun 2026</p></div></div>
+          <div class="timeline-item"><div class="tl-dot tl-done">✓</div><div class="tl-text"><h5>Purple Investment · Dynamic</h5><p>AED 500/mo · 5 years · Lumpsum AED 31,065</p></div></div>
+          <div class="timeline-item"><div class="tl-dot tl-done">✓</div><div class="tl-text"><h5>First payment processed</h5><p>AED 500 · Visa ••4242</p></div></div>
+          <div class="timeline-item"><div class="tl-dot tl-pending">4</div><div class="tl-text"><h5>Next payment</h5><p>17 Jul 2026 · Auto-debit</p></div></div>
+        </div>
+        <div class="coins-card"><div style="font-size:32px;">🪙</div><div><div style="font-size:14px;font-weight:700;">+500 Coins Credited!</div><div style="font-size:11px;color:#64748b;margin-top:2px;">For starting your savings journey</div></div></div>
+        <div class="card"><div style="font-size:13px;font-weight:700;margin-bottom:6px;">Manage your funds</div><div style="font-size:12px;color:#64748b;line-height:1.5;margin-bottom:10px;">Switch portfolios, top up, or track performance via the Sukoon app.</div><div style="background:#f0f5ff;border-radius:10px;padding:10px;text-align:center;font-size:13px;font-weight:700;color:#1d4ed8;">Download Sukoon App →</div></div>
+        <div style="padding:0 16px;"><div class="btn-primary btn-blue" onclick="go(0)">Back to Home</div></div>
+        <div style="padding:12px 16px 16px;text-align:center;"><div style="font-size:12px;color:#64748b;margin-bottom:8px;">Know someone who should start saving?</div><div class="btn-primary btn-orange">Share & Earn 300 Coins 🪙</div></div>
+      </div>
+      <div class="bottom-nav">
+        <div class="bnav"><div class="bnav-icon">🏠</div><div class="bnav-label">Home</div></div>
+        <div class="bnav active"><div class="bnav-icon">👜</div><div class="bnav-label">Wallet</div><div class="bnav-dot"></div></div>
+        <div class="bnav"><div class="bnav-icon">🎮</div><div class="bnav-label">Earn Coins</div></div>
+        <div class="bnav"><div class="bnav-icon">🏆</div><div class="bnav-label">Rewards</div></div>
+        <div class="bnav"><div class="bnav-icon">👤</div><div class="bnav-label">Profile</div></div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<div class="nav-pills" id="navPills">
+  <div class="npill npill-active" onclick="go(0)">🏠 Home</div>
+  <div class="npill" onclick="go(1)">📊 Calc</div>
+  <div class="npill" onclick="go(2)">💼 Quotes</div>
+  <div class="npill" onclick="go(3)">🔵 Fund</div>
+  <div class="npill" onclick="go(4)">📄 Docs</div>
+  <div class="npill" onclick="go(5)">✅ Verify</div>
+  <div class="npill" onclick="go(6)">💳 Pay</div>
+  <div class="npill" onclick="go(7)">🎉 Done</div>
+</div>
+
+<script>
+  let cur = 0;
+  function go(n) {
+    if (n === cur || n < 0 || n >= 8) return;
+    const prev = document.getElementById('sc' + cur);
+    const next = document.getElementById('sc' + n);
+    const fwd = n > cur;
+    next.style.transition = 'none';
+    next.style.transform = fwd ? 'translateX(100%)' : 'translateX(-100%)';
+    next.classList.add('active');
+    requestAnimationFrame(() => requestAnimationFrame(() => {
+      next.style.transition = 'transform 0.32s cubic-bezier(0.4,0,0.2,1)';
+      next.style.transform = 'translateX(0)';
+      prev.style.transition = 'transform 0.32s cubic-bezier(0.4,0,0.2,1)';
+      prev.style.transform = fwd ? 'translateX(-100%)' : 'translateX(100%)';
+    }));
+    setTimeout(() => { prev.classList.remove('active'); prev.style.transform = ''; prev.style.transition = ''; }, 350);
+    document.querySelectorAll('.npill').forEach((p, i) => p.classList.toggle('npill-active', i === n));
+    cur = n;
+  }
+  function setMode(m) {
+    document.getElementById('mA').classList.toggle('on', m === 'A');
+    document.getElementById('mB').classList.toggle('on', m === 'B');
+  }
+  function bump(el) {
+    const s = [30,40,50,60,70];
+    const f = el.querySelector('.fake-slider-fill');
+    const t = el.querySelector('.fake-slider-thumb');
+    const c = parseInt(f.style.width) || 30;
+    const n = s[(s.indexOf(c) + 1) % s.length];
+    f.style.width = n + '%'; t.style.left = 'calc(' + n + '% - 9px)';
+  }
+  const durs = [{w:25,t:'5 Years'},{w:35,t:'7 Years'},{w:45,t:'10 Years'},{w:55,t:'12 Years'},{w:65,t:'15 Years'},{w:75,t:'20 Years'}];
+  let di = 0;
+  function bumpDur(el) {
+    di = (di + 1) % durs.length;
+    const o = durs[di];
+    el.querySelector('.fake-slider-fill').style.width = o.w + '%';
+    el.querySelector('.fake-slider-thumb').style.left = 'calc(' + o.w + '% - 9px)';
+    document.getElementById('dv').textContent = o.t;
+  }
+  const fn = ['Dynamic','Balanced','Conservative'];
+  function pickFund(i) {
+    for (let j = 0; j < 3; j++) {
+      const c = document.getElementById('f' + j), r = document.getElementById('fc' + j);
+      if (j === i) { c.classList.add('sel'); r.className = 'check-circle'; r.textContent = '✓'; }
+      else { c.classList.remove('sel'); r.className = 'empty-circle'; r.textContent = ''; }
+    }
+    document.getElementById('fundCTA').textContent = 'Proceed with ' + fn[i] + ' →';
+  }
+  function toggleDoc(el) {
+    if (el.classList.contains('done')) {
+      el.classList.remove('done');
+      el.innerHTML = '<div style="font-size:22px;">📤</div><div style="font-size:12px;color:#3b82f6;font-weight:600;">Tap to upload</div><div style="font-size:10px;color:#94a3b8;margin-top:2px;">PDF · JPG · PNG</div>';
+    } else {
+      el.classList.add('done');
+      el.innerHTML = '<div style="font-size:22px;">✅</div><div style="font-size:12px;color:#16a34a;font-weight:700;">Uploaded ✓</div>';
+    }
+  }
+  function toggleAcc(header) {
+    const body = header.nextElementSibling;
+    const chevron = header.querySelector('.accordion-chevron');
+    body.classList.toggle('open');
+    chevron.style.transform = body.classList.contains('open') ? 'rotate(180deg)' : '';
+  }
+</script>
+</body>
+</html>
