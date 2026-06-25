@@ -63,8 +63,10 @@
   .service-card-label { font-size: 11px; font-weight: 600; color: #334155; }
 
   .buy-section-title { font-size: 17px; font-weight: 800; color: #0f172a; padding: 4px 16px 10px; }
-  .buy-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; padding: 0 16px 16px; }
-  .buy-tile { background: white; border-radius: 14px; padding: 12px; cursor: pointer; box-shadow: 0 1px 4px rgba(0,0,0,0.06); border: 2px solid transparent; position: relative; overflow: hidden; height: 110px; }
+  .buy-grid { display: flex; gap: 10px; padding: 0 16px 16px; }
+  .buy-col { display: flex; flex-direction: column; gap: 10px; flex: 1; }
+  .buy-tile { background: white; border-radius: 14px; padding: 12px; cursor: pointer; box-shadow: 0 1px 4px rgba(0,0,0,0.06); border: 2px solid transparent; position: relative; overflow: hidden; min-height: 90px; }
+  .buy-tile.tall { min-height: 130px; }
   .buy-tile.highlight { border-color: #1d4ed8; background: #f0f5ff; }
   .buy-tile:active { transform: scale(0.97); }
   .buy-tile h4 { font-size: 14px; font-weight: 700; color: #1d4ed8; }
@@ -279,32 +281,36 @@
 
         <div class="buy-section-title">Buy Insurance</div>
         <div class="buy-grid">
-          <div class="buy-tile" onclick="go(1)">
-            <h4>Car</h4>
-            <p>Get quotes in less than 30 seconds!</p>
-            <div class="buy-tile-tag">Compare 30+ Insurers</div>
-            <img src="assets/alfred-car.png" class="buy-tile-img">
+          <div class="buy-col">
+            <div class="buy-tile tall" onclick="go(1)">
+              <h4>Car</h4>
+              <p>Get quotes in less than 30 seconds!</p>
+              <div class="buy-tile-tag">Compare 30+ Insurers</div>
+              <img src="assets/alfred-car.png" class="buy-tile-img">
+            </div>
+            <div class="buy-tile" onclick="go(1)">
+              <h4>Health</h4>
+              <p>Get the best health cover</p>
+              <img src="assets/alfred-health.png" class="buy-tile-img small">
+            </div>
+            <div class="buy-tile" onclick="go(1)">
+              <h4>Life</h4>
+              <p>Coverage made simple</p>
+              <img src="assets/alfred-life.png" class="buy-tile-img small">
+            </div>
           </div>
-          <div class="buy-tile" onclick="go(1)">
-            <h4>Travel</h4>
-            <p>Instant policy issuance</p>
-            <img src="assets/alfred-travel.png" class="buy-tile-img small">
-          </div>
-          <div class="buy-tile" onclick="go(1)">
-            <h4>Health</h4>
-            <p>Get the best health cover</p>
-            <img src="assets/alfred-health.png" class="buy-tile-img small">
-          </div>
-          <div class="buy-tile highlight" onclick="go(1)">
-            <h4>Savings</h4>
-            <p>Build wealth with confidence</p>
-            <div class="buy-tile-tag new">NEW</div>
-            <img src="assets/alfred-savings.png" class="buy-tile-img small">
-          </div>
-          <div class="buy-tile" onclick="go(1)" style="grid-column: span 1;">
-            <h4>Life</h4>
-            <p>Coverage made simple</p>
-            <img src="assets/alfred-life.png" class="buy-tile-img small">
+          <div class="buy-col">
+            <div class="buy-tile" onclick="go(1)">
+              <h4>Travel</h4>
+              <p>Instant policy issuance</p>
+              <img src="assets/alfred-travel.png" class="buy-tile-img small">
+            </div>
+            <div class="buy-tile highlight tall" onclick="go(1)">
+              <h4>Savings</h4>
+              <p>Build wealth with confidence</p>
+              <div class="buy-tile-tag new">NEW</div>
+              <img src="assets/alfred-savings.png" class="buy-tile-img small">
+            </div>
           </div>
         </div>
       </div>
