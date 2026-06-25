@@ -295,27 +295,21 @@
             <p>Get the best health cover</p>
             <img src="assets/alfred-health.png" class="buy-tile-img small">
           </div>
-          <div class="buy-tile" onclick="go(1)">
-            <h4>Home</h4>
-            <p>Protect what matters most</p>
-            <div class="buy-tile-tag popular">Popular</div>
-            <img src="assets/alfred-home.png" class="buy-tile-img small">
-          </div>
-          <div class="buy-tile" onclick="go(1)" style="grid-column: span 1;">
-            <h4>Life</h4>
-            <p>Coverage made simple</p>
-            <img src="assets/alfred-life.png" class="buy-tile-img small">
-          </div>
           <div class="buy-tile highlight" onclick="go(1)">
             <h4>Savings</h4>
             <p>Build wealth with confidence</p>
             <div class="buy-tile-tag new">NEW</div>
             <img src="assets/alfred-savings.png" class="buy-tile-img small">
           </div>
+          <div class="buy-tile" onclick="go(1)" style="grid-column: span 1;">
+            <h4>Life</h4>
+            <p>Coverage made simple</p>
+            <img src="assets/alfred-life.png" class="buy-tile-img small">
+          </div>
         </div>
       </div>
       <div class="bottom-nav">
-        <div class="bnav active" onclick="go(1)"><div class="bnav-icon">📈</div><div class="bnav-label">Savings</div><div class="bnav-dot"></div></div>
+        <div class="bnav active"><div class="bnav-icon">🏠</div><div class="bnav-label">Home</div><div class="bnav-dot"></div></div>
         <div class="bnav"><div class="bnav-icon">👜</div><div class="bnav-label">Wallet</div></div>
         <div class="bnav"><div class="bnav-icon">🎮</div><div class="bnav-label">Earn Coins</div></div>
         <div class="bnav"><div class="bnav-icon">🏆</div><div class="bnav-label">Rewards</div></div>
@@ -635,7 +629,7 @@
         <div style="padding:12px 16px 16px;text-align:center;"><div style="font-size:12px;color:#64748b;margin-bottom:8px;">Know someone who should start saving?</div><div class="btn-primary btn-orange">Share & Earn 300 Coins 🪙</div></div>
       </div>
       <div class="bottom-nav">
-        <div class="bnav" onclick="go(1)"><div class="bnav-icon">📈</div><div class="bnav-label">Savings</div></div>
+        <div class="bnav" onclick="go(0)"><div class="bnav-icon">🏠</div><div class="bnav-label">Home</div></div>
         <div class="bnav active"><div class="bnav-icon">👜</div><div class="bnav-label">Wallet</div><div class="bnav-dot"></div></div>
         <div class="bnav"><div class="bnav-icon">🎮</div><div class="bnav-label">Earn Coins</div></div>
         <div class="bnav"><div class="bnav-icon">🏆</div><div class="bnav-label">Rewards</div></div>
@@ -647,7 +641,7 @@
 </div>
 
 <div class="nav-pills" id="navPills">
-  <div class="npill npill-active" onclick="go(0)">📈 Savings</div>
+  <div class="npill npill-active" onclick="go(0)">🏠 Home</div>
   <div class="npill" onclick="go(1)">📊 Calc</div>
   <div class="npill" onclick="go(2)">💼 Quotes</div>
   <div class="npill" onclick="go(3)">🔵 Fund</div>
