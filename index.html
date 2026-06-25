@@ -61,6 +61,39 @@
   .guide-payment-icon { width: 38px; height: 38px; border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 17px; flex-shrink: 0; }
   .guide-payment-text h5 { font-size: 13px; font-weight: 700; color: #0f172a; }
   .guide-payment-text p { font-size: 11px; color: #64748b; margin-top: 1px; }
+
+  /* ===== Life Insurance form ===== */
+  .life-section-head { display: flex; align-items: center; gap: 10px; padding: 14px 16px 10px; }
+  .life-section-head img { width: 34px; height: 34px; object-fit: contain; object-position: top; }
+  .life-section-head h3 { font-size: 15px; font-weight: 800; color: #0f172a; }
+  .form-group { margin: 0 16px 12px; }
+  .form-label { font-size: 11px; color: #64748b; margin-bottom: 5px; display: block; }
+  .form-input { width: 100%; background: white; border: 1.5px solid #e2e8f0; border-radius: 10px; padding: 11px 13px; font-size: 13px; color: #0f172a; }
+  .form-input::placeholder { color: #94a3b8; }
+  .form-select { background: white; border: 1.5px solid #e2e8f0; border-radius: 10px; padding: 11px 13px; font-size: 13px; color: #94a3b8; display: flex; justify-content: space-between; align-items: center; cursor: pointer; }
+  .form-select.filled { color: #0f172a; }
+  .form-row { display: flex; gap: 8px; margin: 0 16px 12px; }
+  .form-row .form-group-inline { flex: 1; }
+  .form-row .form-group-inline .form-label { font-size: 11px; color: #64748b; margin-bottom: 5px; display: block; }
+  .currency-input-wrap { display: flex; gap: 6px; }
+  .currency-select { width: 64px; background: white; border: 1.5px solid #e2e8f0; border-radius: 10px; padding: 11px 8px; font-size: 12px; font-weight: 600; color: #0f172a; text-align: center; flex-shrink: 0; }
+  .helper-text { font-size: 10px; color: #94a3b8; margin-top: 6px; line-height: 1.4; }
+  .calc-helper-link { font-size: 12px; color: #1d4ed8; font-weight: 700; cursor: pointer; margin-top: 8px; display: inline-flex; align-items: center; gap: 5px; background: #eff6ff; padding: 7px 12px; border-radius: 8px; }
+  .radio-row { display: flex; gap: 20px; }
+  .radio-opt { display: flex; align-items: center; gap: 7px; cursor: pointer; }
+  .radio-opt-circle { width: 18px; height: 18px; border-radius: 50%; border: 2px solid #cbd5e1; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+  .radio-opt-circle.sel { border-color: #1d4ed8; }
+  .radio-opt-circle.sel::after { content: ''; width: 9px; height: 9px; border-radius: 50%; background: #1d4ed8; }
+  .radio-opt-label { font-size: 13px; color: #334155; }
+  .form-checkbox-row { display: flex; align-items: flex-start; gap: 8px; margin: 0 16px 10px; }
+  .form-checkbox { width: 16px; height: 16px; border-radius: 4px; background: #1d4ed8; display: flex; align-items: center; justify-content: center; color: white; font-size: 10px; flex-shrink: 0; margin-top: 1px; }
+  .form-checkbox-row p { font-size: 10.5px; color: #64748b; line-height: 1.4; }
+  .form-divider { height: 1px; background: #f1f5f9; margin: 4px 16px 8px; }
+
+  /* Coverage calculator overlay (reuses guide-sheet visuals) */
+  .cov-result-box { background: linear-gradient(135deg, #ecfdf5, #d1fae5); border-radius: 12px; padding: 16px; text-align: center; margin: 14px 0; }
+  .cov-result-label { font-size: 11px; color: #065f46; margin-bottom: 4px; }
+  .cov-result-amount { font-size: 26px; font-weight: 800; color: #065f46; }
   .bottom-nav { background: white; border-top: 1px solid #eef2f8; display: flex; justify-content: space-around; padding: 8px 0 4px; flex-shrink: 0; }
   .bnav { display: flex; flex-direction: column; align-items: center; gap: 2px; cursor: pointer; padding: 2px 6px; }
   .bnav-icon { font-size: 19px; line-height: 1; }
@@ -323,7 +356,7 @@
               <p>Get the best health cover</p>
               <img src="assets/alfred-health.png" class="buy-tile-img small">
             </div>
-            <div class="buy-tile" onclick="go(1)">
+            <div class="buy-tile" onclick="go(8)">
               <h4>Life</h4>
               <p>Coverage made simple</p>
               <img src="assets/alfred-life.png" class="buy-tile-img small">
@@ -688,6 +721,233 @@
       </div>
     </div>
 
+    <!-- S8: LIFE INSURANCE FORM -->
+    <div class="screen" id="sc8">
+      <div class="status"><span>10:57</span><span>●●● 🔋</span></div>
+      <div class="topnav">
+        <div class="back-btn" onclick="go(0)"><svg viewBox="0 0 24 24" fill="none" stroke="#1d4ed8" stroke-width="2.5"><path d="M19 12H5M12 5l-7 7 7 7"/></svg></div>
+        <span class="topnav-title">Life Insurance</span>
+        <div class="info-btn" onclick="openLifeGuide()">!</div>
+      </div>
+      <div class="scroll-content">
+        <div class="life-section-head">
+          <img src="assets/alfred-life.png">
+          <h3>Get your life insurance quotes</h3>
+        </div>
+
+        <div class="form-group">
+          <span class="form-label">Tenure cover</span>
+          <div class="form-select" id="tenureSelect" onclick="cycleSelect(this, ['10 years','15 years','20 years','25 years','30 years'])">Select tenure cover <span>⌄</span></div>
+        </div>
+
+        <div class="form-group">
+          <span class="form-label">Sum Assured</span>
+          <div class="currency-input-wrap">
+            <div class="currency-select">AED ⌄</div>
+            <input class="form-input" id="sumAssuredInput" placeholder="Sum Assured" inputmode="numeric">
+          </div>
+          <div class="helper-text">Simply multiply your annual income by the years remaining until retirement (or any multiple your budget permits) to determine your sum assured.</div>
+          <div class="calc-helper-link" onclick="openCoverageCalc()">🧮 Calculate how much cover you need</div>
+        </div>
+
+        <div class="form-group">
+          <span class="form-label">Do you smoke?</span>
+          <div class="radio-row">
+            <div class="radio-opt" onclick="selectRadio(this,'smoke')"><div class="radio-opt-circle sel"></div><span class="radio-opt-label">Yes</span></div>
+            <div class="radio-opt" onclick="selectRadio(this,'smoke')"><div class="radio-opt-circle"></div><span class="radio-opt-label">No</span></div>
+          </div>
+        </div>
+
+        <div class="form-divider"></div>
+
+        <div class="life-section-head">
+          <img src="assets/alfred-star.png" style="border-radius:50%;">
+          <h3>Tell us about yourself</h3>
+        </div>
+
+        <div class="form-group">
+          <span class="form-label">Your full name</span>
+          <input class="form-input" placeholder="Your full name" value="Akash Sharma">
+          <div class="helper-text">Your name as it appears on your Emirates ID</div>
+        </div>
+
+        <div class="form-group">
+          <span class="form-label">Your nationality</span>
+          <div class="form-select filled" id="nationalitySelect" onclick="cycleSelect(this, ['Indian','Emirati','British','Pakistani','Filipino'])">Indian <span>⌄</span></div>
+        </div>
+
+        <div class="form-row">
+          <div class="form-group-inline"><span class="form-label">Day</span><div class="form-select filled" id="dobDay" onclick="cycleSelect(this, ['01','05','12','22','28'])">22 <span>⌄</span></div></div>
+          <div class="form-group-inline"><span class="form-label">Month</span><div class="form-select filled" id="dobMonth" onclick="cycleSelect(this, ['Jan','Mar','May','Aug','Dec'])">May <span>⌄</span></div></div>
+          <div class="form-group-inline"><span class="form-label">Year</span><div class="form-select filled" id="dobYear" onclick="cycleSelect(this, ['1985','1990','1995','1997','2000'])">1997 <span>⌄</span></div></div>
+        </div>
+
+        <div class="form-group">
+          <span class="form-label">Your gender</span>
+          <div class="radio-row">
+            <div class="radio-opt" onclick="selectRadio(this,'gender')"><div class="radio-opt-circle sel"></div><span class="radio-opt-label">Male</span></div>
+            <div class="radio-opt" onclick="selectRadio(this,'gender')"><div class="radio-opt-circle"></div><span class="radio-opt-label">Female</span></div>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <span class="form-label">Select your marital status</span>
+          <div class="radio-row">
+            <div class="radio-opt" onclick="selectRadio(this,'marital')"><div class="radio-opt-circle sel"></div><span class="radio-opt-label">Single</span></div>
+            <div class="radio-opt" onclick="selectRadio(this,'marital')"><div class="radio-opt-circle"></div><span class="radio-opt-label">Married</span></div>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <span class="form-label">Your phone number</span>
+          <input class="form-input" value="+971 5X XXX XXXX">
+        </div>
+
+        <div class="form-group">
+          <span class="form-label">Your email</span>
+          <input class="form-input" value="akash.sharma@myalfred.com">
+        </div>
+
+        <div class="form-checkbox-row">
+          <div class="form-checkbox">✓</div>
+          <p>Get instant updates from Alfred. No personal information will be shared on WhatsApp.</p>
+        </div>
+        <div class="form-checkbox-row">
+          <div class="form-checkbox">✓</div>
+          <p>I would like to receive promotions and offers from InsuranceMarket.ae</p>
+        </div>
+
+        <div style="padding:6px 16px 20px;"><div class="btn-primary" style="background:#f59e0b;color:white;" onclick="go(9)">View Quotes →</div></div>
+      </div>
+
+      <!-- Coverage calculator overlay -->
+      <div class="guide-overlay" id="coverageOverlay">
+        <div class="guide-sheet">
+          <div class="guide-sheet-header">
+            <div class="guide-back"></div>
+            <div class="guide-sheet-title">How Much Cover Do You Need?</div>
+            <div class="guide-close" onclick="closeCoverageCalc()">✕</div>
+          </div>
+          <div class="guide-sheet-body">
+            <div class="guide-detail-intro">Answer a few quick questions and we'll estimate the sum assured that fits your family's needs.</div>
+            <div class="form-group" style="margin:0 0 12px;">
+              <span class="form-label">Your annual income (AED)</span>
+              <input class="form-input" id="covIncome" placeholder="e.g. 180,000" inputmode="numeric" value="180000">
+            </div>
+            <div class="form-group" style="margin:0 0 12px;">
+              <span class="form-label">Outstanding loans (AED)</span>
+              <input class="form-input" id="covLoan" placeholder="e.g. 200,000" inputmode="numeric" value="200000">
+            </div>
+            <div class="form-group" style="margin:0 0 12px;">
+              <span class="form-label">Other liabilities (AED)</span>
+              <input class="form-input" id="covLiabilities" placeholder="e.g. 30,000" inputmode="numeric" value="30000">
+            </div>
+            <div class="form-group" style="margin:0 0 4px;">
+              <span class="form-label">Years remaining until retirement</span>
+              <input class="form-input" id="covYears" placeholder="e.g. 20" inputmode="numeric" value="20">
+            </div>
+            <div class="cov-result-box" id="covResultBox" style="display:none;">
+              <div class="cov-result-label">Recommended sum assured</div>
+              <div class="cov-result-amount" id="covResultAmount">AED 0</div>
+            </div>
+          </div>
+          <div class="guide-cta-wrap">
+            <div class="guide-cta-btn" id="covCalcBtn" onclick="calcCoverage()">Calculate</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Life Insurance Guide overlay -->
+      <div class="guide-overlay" id="lifeGuideOverlay">
+        <div class="guide-sheet">
+          <div class="guide-sheet-header">
+            <div class="guide-back" id="lifeGuideBackBtn" onclick="lifeGuideShowList()">
+              <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="#1d4ed8" stroke-width="2.5"><path d="M15 18l-6-6 6-6"/></svg>
+            </div>
+            <div class="guide-sheet-title" id="lifeGuideTitle">Alfred's Life Insurance Guide</div>
+            <div class="guide-close" onclick="closeLifeGuide()">✕</div>
+          </div>
+          <div class="guide-sheet-body" id="lifeGuideBody"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- S9: LIFE INSURANCE QUOTES -->
+    <div class="screen" id="sc9">
+      <div class="status"><span>10:57</span><span>●●● 🔋</span></div>
+      <div class="topnav">
+        <div class="back-btn" onclick="go(8)"><svg viewBox="0 0 24 24" fill="none" stroke="#1d4ed8" stroke-width="2.5"><path d="M19 12H5M12 5l-7 7 7 7"/></svg></div>
+        <span class="topnav-title">Your Life Insurance Quotes</span>
+      </div>
+      <div class="scroll-content" style="padding-top:10px;">
+        <div class="plan-strip" style="background:#1d4ed8;">
+          <div><div style="font-size:13px;font-weight:700;">Term Life · 20 years</div><div style="font-size:11px;opacity:0.8;margin-top:1px;">Sum Assured AED 2,000,000 · Non-smoker</div></div>
+        </div>
+
+        <div class="plan-card">
+          <div class="plan-card-body">
+            <div class="plan-card-top">
+              <div class="insurer-logo-box"><div style="font-size:12px;font-weight:800;color:#1d4ed8;">MetLife</div></div>
+              <div class="plan-card-names">
+                <div class="plan-name-big">Term Life Protect</div>
+                <div class="no-exit-badge">✅ Covers Critical Illness</div>
+                <div class="plan-provider">MetLife UAE</div>
+              </div>
+            </div>
+            <div class="payout-row">
+              <span class="payout-label">Monthly Premium</span>
+              <span class="payout-amount">AED 89.00</span>
+            </div>
+          </div>
+          <div class="plan-card-actions">
+            <div class="detail-btn">📋 Plan details</div>
+          </div>
+          <div class="buy-btn" onclick="alert('Our advisor will contact you shortly to complete your purchase.')">Buy Now</div>
+        </div>
+
+        <div class="plan-card plan-card-2">
+          <div class="plan-card-body">
+            <div class="plan-card-top">
+              <div class="insurer-logo-box"><div style="font-size:12px;font-weight:800;color:#d97706;">ZURICH</div></div>
+              <div class="plan-card-names">
+                <div class="plan-name-big">Zurich Term Life</div>
+                <div class="plan-provider">Zurich International Life</div>
+              </div>
+            </div>
+            <div class="payout-row">
+              <span class="payout-label">Monthly Premium</span>
+              <span class="payout-amount">AED 76.00</span>
+            </div>
+          </div>
+          <div class="plan-card-actions">
+            <div class="detail-btn">📋 Plan details</div>
+          </div>
+          <div class="buy-btn" onclick="alert('Our advisor will contact you shortly to complete your purchase.')">Buy Now</div>
+        </div>
+
+        <div class="plan-card plan-card-2">
+          <div class="plan-card-body">
+            <div class="plan-card-top">
+              <div class="insurer-logo-box"><div style="font-size:12px;font-weight:800;color:#16a34a;">AXA</div></div>
+              <div class="plan-card-names">
+                <div class="plan-name-big">AXA Life Shield</div>
+                <div class="plan-provider">AXA Gulf</div>
+              </div>
+            </div>
+            <div class="payout-row">
+              <span class="payout-label">Monthly Premium</span>
+              <span class="payout-amount">AED 94.00</span>
+            </div>
+          </div>
+          <div class="plan-card-actions">
+            <div class="detail-btn">📋 Plan details</div>
+          </div>
+          <div class="buy-btn" onclick="alert('Our advisor will contact you shortly to complete your purchase.')">Buy Now</div>
+        </div>
+        <div style="height:16px;"></div>
+      </div>
+    </div>
+
   </div>
 </div>
 
@@ -700,12 +960,14 @@
   <div class="npill" onclick="go(5)">✅ Verify</div>
   <div class="npill" onclick="go(6)">💳 Pay</div>
   <div class="npill" onclick="go(7)">🎉 Done</div>
+  <div class="npill" onclick="go(8)">📝 Life Form</div>
+  <div class="npill" onclick="go(9)">📋 Life Quotes</div>
 </div>
 
 <script>
   let cur = 0;
   function go(n) {
-    if (n === cur || n < 0 || n >= 8) return;
+    if (n === cur || n < 0 || n >= 10) return;
     const prev = document.getElementById('sc' + cur);
     const next = document.getElementById('sc' + n);
     const fwd = n > cur;
@@ -876,6 +1138,146 @@
     const chevron = header.querySelector('.accordion-chevron');
     body.classList.toggle('open');
     chevron.style.transform = body.classList.contains('open') ? 'rotate(180deg)' : '';
+  }
+
+  /* ===== Life Insurance form interactions ===== */
+  function cycleSelect(el, options) {
+    const current = el.textContent.replace('⌄', '').trim();
+    let idx = options.indexOf(current);
+    idx = (idx + 1) % options.length;
+    el.innerHTML = options[idx] + ' <span>⌄</span>';
+    el.classList.add('filled');
+  }
+  function selectRadio(el, group) {
+    el.parentElement.querySelectorAll('.radio-opt-circle').forEach(c => c.classList.remove('sel'));
+    el.querySelector('.radio-opt-circle').classList.add('sel');
+  }
+
+  /* ===== Coverage calculator ===== */
+  function openCoverageCalc() {
+    document.getElementById('coverageOverlay').classList.add('open');
+    document.getElementById('covResultBox').style.display = 'none';
+    document.getElementById('covCalcBtn').textContent = 'Calculate';
+    document.getElementById('covCalcBtn').onclick = calcCoverage;
+  }
+  function closeCoverageCalc() {
+    document.getElementById('coverageOverlay').classList.remove('open');
+  }
+  function calcCoverage() {
+    const income = parseFloat(document.getElementById('covIncome').value) || 0;
+    const loan = parseFloat(document.getElementById('covLoan').value) || 0;
+    const liabilities = parseFloat(document.getElementById('covLiabilities').value) || 0;
+    const years = parseFloat(document.getElementById('covYears').value) || 0;
+    const total = (income * years) + loan + liabilities;
+    document.getElementById('covResultAmount').textContent = 'AED ' + total.toLocaleString();
+    document.getElementById('covResultBox').style.display = 'block';
+    const btn = document.getElementById('covCalcBtn');
+    btn.textContent = 'Use This Amount →';
+    btn.onclick = function() { useCoverageAmount(total); };
+  }
+  function useCoverageAmount(amount) {
+    document.getElementById('sumAssuredInput').value = amount.toLocaleString();
+    closeCoverageCalc();
+  }
+
+  /* ===== Life Insurance Guide (sourced from the life-insurance landing page) ===== */
+  const lifeGuideTopics = [
+    { id: 'covers', icon: '🛡️', bg: '#dbeafe', label: 'What does my life insurance cover?' },
+    { id: 'who', icon: '👤', bg: '#fef3c7', label: 'Who needs life insurance in the UAE?' },
+    { id: 'types', icon: '📑', bg: '#dcfce7', label: 'What types of life insurance plans are available?' },
+    { id: 'premium', icon: '🧮', bg: '#dbeafe', label: 'How is my premium calculated?' },
+    { id: 'faqs', icon: '❓', bg: '#ede9fe', label: 'Common questions about life insurance' },
+  ];
+
+  const lifeGuideDetails = {
+    covers: {
+      title: 'What does my life insurance cover?',
+      intro: 'A life insurance policy is built around several core benefits, designed to protect your family financially under different circumstances.',
+      items: [
+        { icon: '💰', text: 'Death Benefit — a lump sum payout to support your family if the unexpected happens during the policy term.' },
+        { icon: '🦽', text: 'Permanent Total Disability Cover — provides funds if you become permanently and totally disabled.' },
+        { icon: '🏠', text: 'Family Income Benefit — monthly payouts to help manage household expenses.' },
+        { icon: '🏥', text: 'Critical Illness Cover — pays out upon diagnosis of a serious covered illness.' },
+        { icon: '⏸️', text: 'Waiver of Premium — future premiums are waived if you become totally disabled.' },
+        { icon: '🚑', text: 'Accidental Death Benefit — an extra payout if death occurs from an accident.' },
+        { icon: '🛏️', text: 'Hospital Cash Benefit — fixed daily payments during hospitalization.' },
+        { icon: '⏳', text: 'Terminal Illness Benefit — an early payout if diagnosed with a terminal illness.' },
+      ],
+    },
+    who: {
+      title: 'Who needs life insurance in the UAE?',
+      intro: 'Life insurance isn\'t just for one type of person — it\'s relevant to anyone with people or debts depending on their income.',
+      items: [
+        { icon: '👨‍👩‍👧', text: 'Anyone with dependents who rely on their income to cover daily expenses.' },
+        { icon: '🏦', text: 'Anyone with a mortgage, personal loan, or other outstanding debt.' },
+        { icon: '🌍', text: 'Expats are fully eligible — life insurance is one of the most common protections UAE residents take out regardless of nationality.' },
+        { icon: '💼', text: 'Business owners — Keyman Insurance protects a company against the loss of a key person.' },
+        { icon: '❤️', text: "One policy, lasting peace of mind — protection designed around your life." },
+      ],
+    },
+    types: {
+      title: 'What types of life insurance plans are available?',
+      intro: 'There are five main plan structures, each suited to a different goal.',
+      items: [
+        { icon: '📅', text: 'Term Life — covers you for a fixed period (e.g. 20 years), the most affordable option.' },
+        { icon: '♾️', text: 'Whole of Life — covers you for your entire lifetime, with a guaranteed payout.' },
+        { icon: '📈', text: 'Endowment Plans — combines life cover with a savings/investment component.' },
+        { icon: '🔑', text: 'Keyman Insurance — protects a business against the financial loss of a key employee or founder.' },
+        { icon: '👥', text: 'Group Life Insurance — employer-provided cover for a group of employees.' },
+      ],
+    },
+    premium: {
+      title: 'How is my premium calculated?',
+      intro: 'Plans start from as little as AED 63/month. Your exact premium depends on a few personal factors.',
+      items: [
+        { icon: '🎂', text: 'Your age — younger applicants generally get lower premiums.' },
+        { icon: '📅', text: 'Your policy term — longer terms affect the monthly cost.' },
+        { icon: '⚧', text: 'Your gender — statistically factored into the premium calculation.' },
+        { icon: '🚬', text: 'Smoking status — smokers are typically charged a higher premium.' },
+        { icon: '💵', text: 'Your chosen sum assured — higher coverage means a higher premium.' },
+      ],
+    },
+    faqs: {
+      title: 'Common questions about life insurance',
+      intro: 'A few things most customers want to know before buying.',
+      items: [
+        { icon: '📑', text: 'You can hold multiple life insurance policies at the same time — there\'s no restriction on the number of plans.' },
+        { icon: '💰', text: 'Payouts to your beneficiaries are generally tax-free in the UAE.' },
+        { icon: '🚫', text: 'You can cancel your policy at any time, subject to the insurer\'s terms.' },
+        { icon: '🔢', text: 'The minimum age to apply is typically 18 years old.' },
+        { icon: '🩺', text: 'Medical tests may be required depending on your age and the coverage amount you select.' },
+      ],
+    },
+  };
+
+  function openLifeGuide() {
+    document.getElementById('lifeGuideOverlay').classList.add('open');
+    lifeGuideShowList();
+  }
+  function closeLifeGuide() {
+    document.getElementById('lifeGuideOverlay').classList.remove('open');
+  }
+  function lifeGuideShowList() {
+    document.getElementById('lifeGuideTitle').textContent = "Alfred's Life Insurance Guide";
+    document.getElementById('lifeGuideBackBtn').classList.remove('show');
+    const body = document.getElementById('lifeGuideBody');
+    body.innerHTML = lifeGuideTopics.map(t =>
+      `<div class="guide-topic" onclick="lifeGuideOpenTopic('${t.id}')">
+        <div class="guide-topic-icon" style="background:${t.bg};">${t.icon}</div>
+        <div class="guide-topic-label">${t.label}</div>
+        <div class="guide-topic-chevron">›</div>
+      </div>`
+    ).join('');
+  }
+  function lifeGuideOpenTopic(id) {
+    document.getElementById('lifeGuideBackBtn').classList.add('show');
+    const d = lifeGuideDetails[id];
+    document.getElementById('lifeGuideTitle').textContent = d.title;
+    const body = document.getElementById('lifeGuideBody');
+    body.innerHTML =
+      `<div class="guide-detail-intro">${d.intro}</div>` +
+      d.items.map(it => `<div class="guide-detail-item"><div class="guide-detail-item-icon">${it.icon}</div><p>${it.text}</p></div>`).join('') +
+      `<div class="guide-cta-wrap" style="margin:14px -16px -14px;"><div class="guide-cta-btn" onclick="closeLifeGuide()">View Personalised Quote →</div></div>`;
   }
 </script>
 </body>
