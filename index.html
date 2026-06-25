@@ -45,25 +45,35 @@
   .tag { display: inline-flex; align-items: center; font-size: 10px; font-weight: 700; padding: 2px 8px; border-radius: 20px; }
 
   .alfred-header { background: white; padding: 10px 16px 8px; display: flex; align-items: center; justify-content: space-between; flex-shrink: 0; }
-  .alfred-logo-text { font-size: 20px; font-weight: 800; color: #1d4ed8; letter-spacing: -0.5px; }
-  .alfred-logo-sub { color: #f59e0b; font-size: 10px; font-weight: 600; display: block; margin-top: -4px; }
-  .home-banner { background: linear-gradient(135deg, #1d4ed8 0%, #1e40af 100%); border-radius: 16px; margin: 12px 16px; padding: 16px; color: white; position: relative; overflow: hidden; cursor: pointer; }
-  .home-banner::after { content: '💰'; font-size: 52px; position: absolute; right: 10px; bottom: 6px; opacity: 0.15; }
-  .home-banner-eyebrow { background: rgba(255,255,255,0.2); border-radius: 20px; font-size: 10px; font-weight: 700; display: inline-block; padding: 3px 10px; margin-bottom: 6px; }
-  .home-banner h2 { font-size: 18px; font-weight: 800; line-height: 1.2; margin-bottom: 6px; }
-  .home-banner p { font-size: 12px; opacity: 0.85; margin-bottom: 12px; }
-  .home-banner-cta { background: white; color: #1d4ed8; border-radius: 10px; padding: 8px 16px; font-size: 12px; font-weight: 700; display: inline-block; }
+  .alfred-logo-text { font-size: 20px; font-weight: 800; color: #4a9fd8; letter-spacing: -0.5px; }
+  .alfred-logo-text .my-part { color: #8fc1e8; }
+  .alfred-logo-sub { color: #f59e0b; font-size: 9px; font-weight: 600; display: block; margin-top: -4px; letter-spacing: 0.5px; }
+  .hamburger-btn { font-size: 20px; color: #334155; cursor: pointer; }
+
+  .hero-banner { background: linear-gradient(135deg, #2e8fd6 0%, #1d6fb8 100%); border-radius: 14px; margin: 12px 16px; padding: 16px; color: white; position: relative; overflow: hidden; display: flex; align-items: center; min-height: 110px; }
+  .hero-banner-text { flex: 1; padding-right: 8px; }
+  .hero-banner h2 { font-size: 16px; font-weight: 800; line-height: 1.25; margin-bottom: 6px; }
+  .hero-banner p { font-size: 11px; opacity: 0.9; line-height: 1.4; }
+  .hero-banner-img { width: 95px; height: 95px; object-fit: contain; object-position: bottom; flex-shrink: 0; margin-bottom: -16px; margin-right: -6px; }
+
+  .services-row { display: flex; gap: 10px; padding: 4px 16px 16px; }
+  .service-card { flex: 1; background: white; border-radius: 12px; padding: 12px 6px; text-align: center; box-shadow: 0 1px 4px rgba(0,0,0,0.05); cursor: pointer; }
+  .service-card:active { transform: scale(0.97); }
+  .service-card-icon { width: 40px; height: 40px; margin: 0 auto 6px; border-radius: 50%; background: #f0f5ff; display: flex; align-items: center; justify-content: center; font-size: 19px; }
+  .service-card-label { font-size: 11px; font-weight: 600; color: #334155; }
+
+  .buy-section-title { font-size: 17px; font-weight: 800; color: #0f172a; padding: 4px 16px 10px; }
   .buy-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; padding: 0 16px 16px; }
-  .buy-tile { background: white; border-radius: 14px; padding: 14px 12px; cursor: pointer; box-shadow: 0 1px 4px rgba(0,0,0,0.06); border: 2px solid transparent; }
+  .buy-tile { background: white; border-radius: 14px; padding: 12px; cursor: pointer; box-shadow: 0 1px 4px rgba(0,0,0,0.06); border: 2px solid transparent; position: relative; overflow: hidden; height: 96px; }
   .buy-tile.highlight { border-color: #1d4ed8; background: #f0f5ff; }
   .buy-tile:active { transform: scale(0.97); }
-  .buy-tile-icon { font-size: 26px; margin-bottom: 6px; }
-  .buy-tile h4 { font-size: 13px; font-weight: 700; color: #0f172a; }
-  .buy-tile p { font-size: 11px; color: #64748b; margin-top: 1px; }
-  .stats-row { display: flex; gap: 8px; padding: 0 16px 12px; }
-  .stat-chip { flex: 1; background: white; border-radius: 10px; padding: 8px; text-align: center; }
-  .stat-chip-num { font-size: 14px; font-weight: 800; color: #1d4ed8; }
-  .stat-chip-label { font-size: 9px; color: #64748b; margin-top: 1px; }
+  .buy-tile h4 { font-size: 14px; font-weight: 700; color: #1d4ed8; }
+  .buy-tile p { font-size: 10px; color: #64748b; margin-top: 2px; line-height: 1.3; max-width: 65%; }
+  .buy-tile-tag { display: inline-block; background: #dbeafe; color: #1d4ed8; font-size: 9px; font-weight: 700; padding: 2px 7px; border-radius: 10px; margin-top: 6px; }
+  .buy-tile-tag.popular { background: #fef3c7; color: #d97706; }
+  .buy-tile-tag.new { background: #fef3c7; color: #d97706; }
+  .buy-tile-img { position: absolute; right: 0; bottom: 0; width: 58px; height: 58px; object-fit: contain; object-position: bottom right; }
+  .buy-tile-img.small { width: 48px; height: 48px; }
 
   .mode-toggle { display: flex; margin: 0 16px 12px; background: #eef2fb; border-radius: 10px; padding: 3px; }
   .mode-btn { flex: 1; padding: 9px; text-align: center; font-size: 12px; font-weight: 600; border-radius: 8px; cursor: pointer; color: #64748b; }
@@ -234,34 +244,78 @@
     <!-- S0: HOME -->
     <div class="screen active" id="sc0">
       <div class="alfred-header">
-        <div style="display:flex;align-items:center;gap:8px;">
-          <div style="width:34px;height:34px;background:#dbeafe;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:18px;">🧑‍💼</div>
-          <div><div class="alfred-logo-text">myAlfred</div><div class="alfred-logo-sub">premium</div></div>
+        <div style="display:flex;align-items:center;gap:10px;">
+          <div class="hamburger-btn">☰</div>
+          <div style="display:flex;align-items:center;gap:6px;">
+            <img src="assets/alfred-star.png" style="width:26px;height:26px;object-fit:contain;object-position:top;border-radius:50%;">
+            <div><div class="alfred-logo-text"><span class="my-part">my</span>Alfred</div><div class="alfred-logo-sub">premium</div></div>
+          </div>
         </div>
-        <div style="width:36px;height:36px;border-radius:50%;border:1.5px solid #e2e8f0;display:flex;align-items:center;justify-content:center;font-size:18px;">🔔</div>
+        <div style="font-size:20px;color:#334155;">🔔</div>
       </div>
       <div class="scroll-content">
-        <div class="home-banner" onclick="go(1)">
-          <div class="home-banner-eyebrow">✨ NEW — Savings Plans</div>
-          <h2>Grow Your Money with Alfred</h2>
-          <p>Start from AED 500/mo. See your wealth compound.</p>
-          <div class="home-banner-cta">Calculate Now →</div>
+        <div class="hero-banner">
+          <div class="hero-banner-text">
+            <h2>40+ Insurers.<br>One Smart Choice.</h2>
+            <p>Compare plans, get instant quotes, and find the right cover in minutes.</p>
+          </div>
+          <img src="assets/alfred-hero.png" class="hero-banner-img">
         </div>
-        <div class="stats-row">
-          <div class="stat-chip"><div class="stat-chip-num">4.8★</div><div class="stat-chip-label">30K reviews</div></div>
-          <div class="stat-chip"><div class="stat-chip-num">40+</div><div class="stat-chip-label">Insurers</div></div>
-          <div class="stat-chip"><div class="stat-chip-num">200K+</div><div class="stat-chip-label">Policyholders</div></div>
+
+        <div class="services-row">
+          <div class="service-card" onclick="go(2)">
+            <div class="service-card-icon">📋</div>
+            <div class="service-card-label">Policies</div>
+          </div>
+          <div class="service-card" onclick="go(2)">
+            <div class="service-card-icon">💬</div>
+            <div class="service-card-label">Quotes</div>
+          </div>
+          <div class="service-card" onclick="go(2)">
+            <div class="service-card-icon">🛎️</div>
+            <div class="service-card-label">Services</div>
+          </div>
         </div>
-        <div style="font-size:11px;font-weight:700;color:#64748b;text-transform:uppercase;letter-spacing:0.5px;padding:4px 16px 6px;">Buy Insurance</div>
+
+        <div class="buy-section-title">Buy Insurance</div>
         <div class="buy-grid">
-          <div class="buy-tile" onclick="go(1)"><div class="buy-tile-icon">🚗</div><h4>Car</h4><p>Quotes in 30 sec</p></div>
-          <div class="buy-tile" onclick="go(1)"><div class="buy-tile-icon">✈️</div><h4>Travel</h4><p>Instant policy</p></div>
-          <div class="buy-tile" onclick="go(1)"><div class="buy-tile-icon">🏠</div><h4>Home</h4><p>Protect home</p></div>
-          <div class="buy-tile highlight" onclick="go(1)"><div style="margin-bottom:4px;"><span style="background:#fef3c7;color:#d97706;font-size:10px;font-weight:700;padding:2px 8px;border-radius:20px;">NEW</span></div><div class="buy-tile-icon">📈</div><h4>Savings</h4><p>Build wealth</p></div>
+          <div class="buy-tile" onclick="go(1)">
+            <h4>Car</h4>
+            <p>Get quotes in less than 30 seconds!</p>
+            <div class="buy-tile-tag">Compare 30+ Insurers</div>
+            <img src="assets/alfred-car.png" class="buy-tile-img">
+          </div>
+          <div class="buy-tile" onclick="go(1)">
+            <h4>Travel</h4>
+            <p>Instant policy issuance</p>
+            <img src="assets/alfred-travel.png" class="buy-tile-img small">
+          </div>
+          <div class="buy-tile" onclick="go(1)">
+            <h4>Health</h4>
+            <p>Get the best health cover</p>
+            <img src="assets/alfred-health.png" class="buy-tile-img small">
+          </div>
+          <div class="buy-tile" onclick="go(1)">
+            <h4>Home</h4>
+            <p>Protect what matters most</p>
+            <div class="buy-tile-tag popular">Popular</div>
+            <img src="assets/alfred-home.png" class="buy-tile-img small">
+          </div>
+          <div class="buy-tile" onclick="go(1)" style="grid-column: span 1;">
+            <h4>Life</h4>
+            <p>Coverage made simple</p>
+            <img src="assets/alfred-life.png" class="buy-tile-img small">
+          </div>
+          <div class="buy-tile highlight" onclick="go(1)">
+            <h4>Savings</h4>
+            <p>Build wealth with confidence</p>
+            <div class="buy-tile-tag new">NEW</div>
+            <img src="assets/alfred-savings.png" class="buy-tile-img small">
+          </div>
         </div>
       </div>
       <div class="bottom-nav">
-        <div class="bnav active"><div class="bnav-icon">🏠</div><div class="bnav-label">Home</div><div class="bnav-dot"></div></div>
+        <div class="bnav active" onclick="go(1)"><div class="bnav-icon">📈</div><div class="bnav-label">Savings</div><div class="bnav-dot"></div></div>
         <div class="bnav"><div class="bnav-icon">👜</div><div class="bnav-label">Wallet</div></div>
         <div class="bnav"><div class="bnav-icon">🎮</div><div class="bnav-label">Earn Coins</div></div>
         <div class="bnav"><div class="bnav-icon">🏆</div><div class="bnav-label">Rewards</div></div>
@@ -581,7 +635,7 @@
         <div style="padding:12px 16px 16px;text-align:center;"><div style="font-size:12px;color:#64748b;margin-bottom:8px;">Know someone who should start saving?</div><div class="btn-primary btn-orange">Share & Earn 300 Coins 🪙</div></div>
       </div>
       <div class="bottom-nav">
-        <div class="bnav"><div class="bnav-icon">🏠</div><div class="bnav-label">Home</div></div>
+        <div class="bnav" onclick="go(1)"><div class="bnav-icon">📈</div><div class="bnav-label">Savings</div></div>
         <div class="bnav active"><div class="bnav-icon">👜</div><div class="bnav-label">Wallet</div><div class="bnav-dot"></div></div>
         <div class="bnav"><div class="bnav-icon">🎮</div><div class="bnav-label">Earn Coins</div></div>
         <div class="bnav"><div class="bnav-icon">🏆</div><div class="bnav-label">Rewards</div></div>
