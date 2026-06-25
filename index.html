@@ -78,7 +78,6 @@
   .currency-input-wrap { display: flex; gap: 6px; }
   .currency-select { width: 64px; background: white; border: 1.5px solid #e2e8f0; border-radius: 10px; padding: 11px 8px; font-size: 12px; font-weight: 600; color: #0f172a; text-align: center; flex-shrink: 0; }
   .helper-text { font-size: 10px; color: #94a3b8; margin-top: 6px; line-height: 1.4; }
-  .calc-helper-link { font-size: 12px; color: #1d4ed8; font-weight: 700; cursor: pointer; margin-top: 8px; display: inline-flex; align-items: center; gap: 5px; background: #eff6ff; padding: 7px 12px; border-radius: 8px; }
   .radio-row { display: flex; gap: 20px; }
   .radio-opt { display: flex; align-items: center; gap: 7px; cursor: pointer; }
   .radio-opt-circle { width: 18px; height: 18px; border-radius: 50%; border: 2px solid #cbd5e1; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
@@ -89,11 +88,6 @@
   .form-checkbox { width: 16px; height: 16px; border-radius: 4px; background: #1d4ed8; display: flex; align-items: center; justify-content: center; color: white; font-size: 10px; flex-shrink: 0; margin-top: 1px; }
   .form-checkbox-row p { font-size: 10.5px; color: #64748b; line-height: 1.4; }
   .form-divider { height: 1px; background: #f1f5f9; margin: 4px 16px 8px; }
-
-  /* Coverage calculator overlay (reuses guide-sheet visuals) */
-  .cov-result-box { background: linear-gradient(135deg, #ecfdf5, #d1fae5); border-radius: 12px; padding: 16px; text-align: center; margin: 14px 0; }
-  .cov-result-label { font-size: 11px; color: #065f46; margin-bottom: 4px; }
-  .cov-result-amount { font-size: 26px; font-weight: 800; color: #065f46; }
   .bottom-nav { background: white; border-top: 1px solid #eef2f8; display: flex; justify-content: space-around; padding: 8px 0 4px; flex-shrink: 0; }
   .bnav { display: flex; flex-direction: column; align-items: center; gap: 2px; cursor: pointer; padding: 2px 6px; }
   .bnav-icon { font-size: 19px; line-height: 1; }
@@ -747,7 +741,6 @@
             <input class="form-input" id="sumAssuredInput" placeholder="Sum Assured" inputmode="numeric">
           </div>
           <div class="helper-text">Simply multiply your annual income by the years remaining until retirement (or any multiple your budget permits) to determine your sum assured.</div>
-          <div class="calc-helper-link" onclick="openCoverageCalc()">🧮 Calculate how much cover you need</div>
         </div>
 
         <div class="form-group">
@@ -765,21 +758,22 @@
           <h3>Tell us about yourself</h3>
         </div>
 
-        <div class="form-group">
-          <span class="form-label">Your full name</span>
-          <input class="form-input" placeholder="Your full name" value="Akash Sharma">
-          <div class="helper-text">Your name as it appears on your Emirates ID</div>
+        <div class="tip-box" style="background:#f0fdf4;">
+          <span style="font-size:14px;">✅</span>
+          <p style="color:#166534;">Your name, email, phone and date of birth are already on file — no need to re-enter them.</p>
+        </div>
+
+        <div class="verify-section">
+          <div class="verify-header"><h4>Your Details</h4><span class="edit-link">Edit</span></div>
+          <div class="verify-row"><span class="verify-key">Full name</span><span class="verify-val">Akash Sharma</span></div>
+          <div class="verify-row"><span class="verify-key">Date of birth</span><span class="verify-val">22 May 1997</span></div>
+          <div class="verify-row"><span class="verify-key">Phone</span><span class="verify-val">+971 5X XXX XXXX</span></div>
+          <div class="verify-row"><span class="verify-key">Email</span><span class="verify-val" style="font-size:11px;">akash.sharma@myalfred.com</span></div>
         </div>
 
         <div class="form-group">
           <span class="form-label">Your nationality</span>
           <div class="form-select filled" id="nationalitySelect" onclick="cycleSelect(this, ['Indian','Emirati','British','Pakistani','Filipino'])">Indian <span>⌄</span></div>
-        </div>
-
-        <div class="form-row">
-          <div class="form-group-inline"><span class="form-label">Day</span><div class="form-select filled" id="dobDay" onclick="cycleSelect(this, ['01','05','12','22','28'])">22 <span>⌄</span></div></div>
-          <div class="form-group-inline"><span class="form-label">Month</span><div class="form-select filled" id="dobMonth" onclick="cycleSelect(this, ['Jan','Mar','May','Aug','Dec'])">May <span>⌄</span></div></div>
-          <div class="form-group-inline"><span class="form-label">Year</span><div class="form-select filled" id="dobYear" onclick="cycleSelect(this, ['1985','1990','1995','1997','2000'])">1997 <span>⌄</span></div></div>
         </div>
 
         <div class="form-group">
@@ -798,16 +792,6 @@
           </div>
         </div>
 
-        <div class="form-group">
-          <span class="form-label">Your phone number</span>
-          <input class="form-input" value="+971 5X XXX XXXX">
-        </div>
-
-        <div class="form-group">
-          <span class="form-label">Your email</span>
-          <input class="form-input" value="akash.sharma@myalfred.com">
-        </div>
-
         <div class="form-checkbox-row">
           <div class="form-checkbox">✓</div>
           <p>Get instant updates from Alfred. No personal information will be shared on WhatsApp.</p>
@@ -818,43 +802,6 @@
         </div>
 
         <div style="padding:6px 16px 20px;"><div class="btn-primary" style="background:#f59e0b;color:white;" onclick="go(9)">View Quotes →</div></div>
-      </div>
-
-      <!-- Coverage calculator overlay -->
-      <div class="guide-overlay" id="coverageOverlay">
-        <div class="guide-sheet">
-          <div class="guide-sheet-header">
-            <div class="guide-back"></div>
-            <div class="guide-sheet-title">How Much Cover Do You Need?</div>
-            <div class="guide-close" onclick="closeCoverageCalc()">✕</div>
-          </div>
-          <div class="guide-sheet-body">
-            <div class="guide-detail-intro">Answer a few quick questions and we'll estimate the sum assured that fits your family's needs.</div>
-            <div class="form-group" style="margin:0 0 12px;">
-              <span class="form-label">Your annual income (AED)</span>
-              <input class="form-input" id="covIncome" placeholder="e.g. 180,000" inputmode="numeric" value="180000">
-            </div>
-            <div class="form-group" style="margin:0 0 12px;">
-              <span class="form-label">Outstanding loans (AED)</span>
-              <input class="form-input" id="covLoan" placeholder="e.g. 200,000" inputmode="numeric" value="200000">
-            </div>
-            <div class="form-group" style="margin:0 0 12px;">
-              <span class="form-label">Other liabilities (AED)</span>
-              <input class="form-input" id="covLiabilities" placeholder="e.g. 30,000" inputmode="numeric" value="30000">
-            </div>
-            <div class="form-group" style="margin:0 0 4px;">
-              <span class="form-label">Years remaining until retirement</span>
-              <input class="form-input" id="covYears" placeholder="e.g. 20" inputmode="numeric" value="20">
-            </div>
-            <div class="cov-result-box" id="covResultBox" style="display:none;">
-              <div class="cov-result-label">Recommended sum assured</div>
-              <div class="cov-result-amount" id="covResultAmount">AED 0</div>
-            </div>
-          </div>
-          <div class="guide-cta-wrap">
-            <div class="guide-cta-btn" id="covCalcBtn" onclick="calcCoverage()">Calculate</div>
-          </div>
-        </div>
       </div>
 
       <!-- Life Insurance Guide overlay -->
@@ -1151,33 +1098,6 @@
   function selectRadio(el, group) {
     el.parentElement.querySelectorAll('.radio-opt-circle').forEach(c => c.classList.remove('sel'));
     el.querySelector('.radio-opt-circle').classList.add('sel');
-  }
-
-  /* ===== Coverage calculator ===== */
-  function openCoverageCalc() {
-    document.getElementById('coverageOverlay').classList.add('open');
-    document.getElementById('covResultBox').style.display = 'none';
-    document.getElementById('covCalcBtn').textContent = 'Calculate';
-    document.getElementById('covCalcBtn').onclick = calcCoverage;
-  }
-  function closeCoverageCalc() {
-    document.getElementById('coverageOverlay').classList.remove('open');
-  }
-  function calcCoverage() {
-    const income = parseFloat(document.getElementById('covIncome').value) || 0;
-    const loan = parseFloat(document.getElementById('covLoan').value) || 0;
-    const liabilities = parseFloat(document.getElementById('covLiabilities').value) || 0;
-    const years = parseFloat(document.getElementById('covYears').value) || 0;
-    const total = (income * years) + loan + liabilities;
-    document.getElementById('covResultAmount').textContent = 'AED ' + total.toLocaleString();
-    document.getElementById('covResultBox').style.display = 'block';
-    const btn = document.getElementById('covCalcBtn');
-    btn.textContent = 'Use This Amount →';
-    btn.onclick = function() { useCoverageAmount(total); };
-  }
-  function useCoverageAmount(amount) {
-    document.getElementById('sumAssuredInput').value = amount.toLocaleString();
-    closeCoverageCalc();
   }
 
   /* ===== Life Insurance Guide (sourced from the life-insurance landing page) ===== */
