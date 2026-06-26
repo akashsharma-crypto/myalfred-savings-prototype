@@ -282,19 +282,12 @@
   .iframe-indicator { margin: 8px 16px 0; background: #fffbeb; border: 1.5px solid #fcd34d; border-radius: 10px; padding: 7px 12px; display: flex; align-items: center; gap: 8px; flex-shrink: 0; }
   .iframe-indicator p { font-size: 11px; color: #92400e; font-weight: 600; }
 
-  .nav-pills { display: flex; gap: 6px; flex-wrap: wrap; justify-content: center; max-width: 375px; }
-  .npill { padding: 5px 12px; border-radius: 20px; font-size: 11px; font-weight: 600; cursor: pointer; border: 1.5px solid rgba(255,255,255,0.3); color: rgba(255,255,255,0.6); background: transparent; transition: all 0.15s; }
-  .npill.npill-active { background: rgba(255,255,255,0.9); color: #1a2340; border-color: white; }
-
   @media (max-width: 420px) {
     .phone-shell { width: 92vw; height: 80vh; max-height: 720px; border-radius: 32px; border-width: 6px; }
   }
 </style>
 </head>
 <body>
-
-<div class="page-title">myAlfred × Savings Plan — Interactive Prototype</div>
-<div class="page-sub">Tap through the phone, or use the pills below to jump to any screen</div>
 
 <div class="phone-shell">
   <div class="notch-bar"><div class="notch"><div class="notch-cam"></div><div class="notch-mic"></div><div class="notch-cam"></div></div></div>
@@ -396,35 +389,35 @@
         </div>
         <div class="card">
           <div class="slider-wrap">
-            <label>Monthly Amount <strong>AED 500</strong></label>
-            <div class="fake-slider" onclick="bump(this)"><div class="fake-slider-fill" style="width:30%"></div><div class="fake-slider-thumb" style="left:calc(30% - 9px)"></div></div>
+            <label id="amountSliderLabel">Monthly Amount <strong id="amountLabel">AED 500</strong></label>
+            <div class="fake-slider" onclick="bumpAmount(this)"><div class="fake-slider-fill" id="amountFill" style="width:0%"></div><div class="fake-slider-thumb" id="amountThumb" style="left:calc(0% - 9px)"></div></div>
           </div>
           <div class="slider-wrap">
             <label>Payment Term <strong id="dv">5 Years</strong></label>
-            <div class="fake-slider" onclick="bumpDur(this)"><div class="fake-slider-fill" style="width:25%"></div><div class="fake-slider-thumb" style="left:calc(25% - 9px)"></div></div>
+            <div class="fake-slider" onclick="bumpDur(this)"><div class="fake-slider-fill" id="termFill" style="width:0%"></div><div class="fake-slider-thumb" id="termThumb" style="left:calc(0% - 9px)"></div></div>
           </div>
           <div class="slider-wrap" style="margin-bottom:0;">
-            <label>Rate of Return <strong>8% p.a.</strong></label>
-            <div class="fake-slider" onclick="bump(this)"><div class="fake-slider-fill" style="width:53%"></div><div class="fake-slider-thumb" style="left:calc(53% - 9px)"></div></div>
+            <label>Rate of Return <strong id="rateLabel">8% p.a.</strong></label>
+            <div class="fake-slider" onclick="bumpRate(this)"><div class="fake-slider-fill" id="rateFill" style="width:60%"></div><div class="fake-slider-thumb" id="rateThumb" style="left:calc(60% - 9px)"></div></div>
           </div>
         </div>
         <div class="result-box" style="margin:0 16px 10px;">
-          <div style="font-size:12px;color:#065f46;margin-bottom:4px;">Lumpsum Payout at Maturity</div>
-          <div class="result-amount">AED 31,065</div>
+          <div style="font-size:12px;color:#065f46;margin-bottom:4px;" id="resultLabel">Lumpsum Payout at Maturity</div>
+          <div class="result-amount" id="resultAmount">AED 31,065</div>
           <div class="result-breakdown">
-            <div class="rb"><div class="rb-val" style="color:#1d4ed8;">AED 30K</div><div class="rb-label">You invest</div></div>
+            <div class="rb"><div class="rb-val" id="investedVal" style="color:#1d4ed8;">AED 30K</div><div class="rb-label" id="investedLabel">You invest</div></div>
             <div class="rb"><div class="rb-val" style="color:#f59e0b;">+</div></div>
-            <div class="rb"><div class="rb-val" style="color:#16a34a;">AED 1,065</div><div class="rb-label">Growth</div></div>
+            <div class="rb"><div class="rb-val" id="growthVal" style="color:#16a34a;">AED 1,065</div><div class="rb-label">Growth</div></div>
           </div>
         </div>
         <div class="card" style="padding:12px;">
           <div style="font-size:12px;font-weight:700;color:#0f172a;margin-bottom:10px;">📊 Growth over time</div>
           <div class="chart-bars">
-            <div class="bar-col"><div class="bar-fill" style="height:20px;"></div><div class="bar-lbl">Y1</div></div>
-            <div class="bar-col"><div class="bar-fill" style="height:32px;"></div><div class="bar-lbl">Y2</div></div>
-            <div class="bar-col"><div class="bar-fill" style="height:44px;"></div><div class="bar-lbl">Y3</div></div>
-            <div class="bar-col"><div class="bar-fill" style="height:56px;"></div><div class="bar-lbl">Y4</div></div>
-            <div class="bar-col"><div class="bar-fill" style="height:70px;background:linear-gradient(to top,#f59e0b,#fbbf24);"></div><div class="bar-lbl">Y5</div></div>
+            <div class="bar-col"><div class="bar-fill" id="barFill0" style="height:14px;"></div><div class="bar-lbl" id="barLbl0">Y1</div></div>
+            <div class="bar-col"><div class="bar-fill" id="barFill1" style="height:28px;"></div><div class="bar-lbl" id="barLbl1">Y2</div></div>
+            <div class="bar-col"><div class="bar-fill" id="barFill2" style="height:42px;"></div><div class="bar-lbl" id="barLbl2">Y3</div></div>
+            <div class="bar-col"><div class="bar-fill" id="barFill3" style="height:56px;"></div><div class="bar-lbl" id="barLbl3">Y4</div></div>
+            <div class="bar-col"><div class="bar-fill" id="barFill4" style="height:70px;background:linear-gradient(to top,#f59e0b,#fbbf24);"></div><div class="bar-lbl" id="barLbl4">Y5</div></div>
           </div>
         </div>
         <div style="font-size:10px;color:#94a3b8;text-align:center;padding:0 16px 12px;">Projections are illustrative. Actual returns may vary.</div>
@@ -893,19 +886,6 @@
   </div>
 </div>
 
-<div class="nav-pills" id="navPills">
-  <div class="npill npill-active" onclick="go(0)">🏠 Home</div>
-  <div class="npill" onclick="go(1)">📊 Calc</div>
-  <div class="npill" onclick="go(2)">💼 Quotes</div>
-  <div class="npill" onclick="go(3)">🔵 Fund</div>
-  <div class="npill" onclick="go(4)">📄 Docs</div>
-  <div class="npill" onclick="go(5)">✅ Verify</div>
-  <div class="npill" onclick="go(6)">💳 Pay</div>
-  <div class="npill" onclick="go(7)">🎉 Done</div>
-  <div class="npill" onclick="go(8)">📝 Life Form</div>
-  <div class="npill" onclick="go(9)">📋 Life Quotes</div>
-</div>
-
 <script>
   let cur = 0;
   function go(n) {
@@ -923,13 +903,150 @@
       prev.style.transform = fwd ? 'translateX(-100%)' : 'translateX(100%)';
     }));
     setTimeout(() => { prev.classList.remove('active'); prev.style.transform = ''; prev.style.transition = ''; }, 350);
-    document.querySelectorAll('.npill').forEach((p, i) => p.classList.toggle('npill-active', i === n));
     cur = n;
   }
+  /* ===== Savings Calculator engine (real compound-interest math, both modes) ===== */
+  const amountOptions = [500, 1000, 1500, 2000, 3000, 5000, 7500, 10000];
+  const goalOptions   = [10000, 25000, 50000, 100000, 250000, 500000, 1000000];
+  const termOptions   = [5, 7, 10, 12, 15, 20, 25, 30];
+  const rateOptions   = [4, 5, 6, 7, 8, 9, 10, 12];
+
+  let calcMode = 'A';      // 'A' = I Want to Invest, 'B' = Reach a Goal
+  let amountIdx = 0;       // index into amountOptions (mode A)
+  let goalIdx = 2;         // index into goalOptions (mode B)
+  let termIdx = 0;         // index into termOptions
+  let rateIdx = 4;         // index into rateOptions (default 8%)
+
+  function pctForIndex(idx, len) { return len <= 1 ? 0 : Math.round((idx / (len - 1)) * 100); }
+
   function setMode(m) {
+    calcMode = m;
     document.getElementById('mA').classList.toggle('on', m === 'A');
     document.getElementById('mB').classList.toggle('on', m === 'B');
+    const label = document.getElementById('amountSliderLabel');
+    if (m === 'A') {
+      label.innerHTML = 'Monthly Amount <strong id="amountLabel">AED ' + amountOptions[amountIdx].toLocaleString() + '</strong>';
+      document.getElementById('amountFill').style.width = pctForIndex(amountIdx, amountOptions.length) + '%';
+      document.getElementById('amountThumb').style.left = 'calc(' + pctForIndex(amountIdx, amountOptions.length) + '% - 9px)';
+    } else {
+      label.innerHTML = 'Goal Amount <strong id="amountLabel">AED ' + goalOptions[goalIdx].toLocaleString() + '</strong>';
+      document.getElementById('amountFill').style.width = pctForIndex(goalIdx, goalOptions.length) + '%';
+      document.getElementById('amountThumb').style.left = 'calc(' + pctForIndex(goalIdx, goalOptions.length) + '% - 9px)';
+    }
+    recalcSavings();
   }
+
+  function bumpAmount(el) {
+    if (calcMode === 'A') {
+      amountIdx = (amountIdx + 1) % amountOptions.length;
+      document.getElementById('amountLabel').textContent = 'AED ' + amountOptions[amountIdx].toLocaleString();
+      const pct = pctForIndex(amountIdx, amountOptions.length);
+      el.querySelector('.fake-slider-fill').style.width = pct + '%';
+      el.querySelector('.fake-slider-thumb').style.left = 'calc(' + pct + '% - 9px)';
+    } else {
+      goalIdx = (goalIdx + 1) % goalOptions.length;
+      document.getElementById('amountLabel').textContent = 'AED ' + goalOptions[goalIdx].toLocaleString();
+      const pct = pctForIndex(goalIdx, goalOptions.length);
+      el.querySelector('.fake-slider-fill').style.width = pct + '%';
+      el.querySelector('.fake-slider-thumb').style.left = 'calc(' + pct + '% - 9px)';
+    }
+    recalcSavings();
+  }
+
+  function bumpDur(el) {
+    termIdx = (termIdx + 1) % termOptions.length;
+    document.getElementById('dv').textContent = termOptions[termIdx] + ' Years';
+    const pct = pctForIndex(termIdx, termOptions.length);
+    el.querySelector('.fake-slider-fill').style.width = pct + '%';
+    el.querySelector('.fake-slider-thumb').style.left = 'calc(' + pct + '% - 9px)';
+    recalcSavings();
+  }
+
+  function bumpRate(el) {
+    rateIdx = (rateIdx + 1) % rateOptions.length;
+    document.getElementById('rateLabel').textContent = rateOptions[rateIdx] + '% p.a.';
+    const pct = pctForIndex(rateIdx, rateOptions.length);
+    el.querySelector('.fake-slider-fill').style.width = pct + '%';
+    el.querySelector('.fake-slider-thumb').style.left = 'calc(' + pct + '% - 9px)';
+    recalcSavings();
+  }
+
+  function futureValue(monthly, years, annualRatePct) {
+    const r = annualRatePct / 100 / 12;
+    const n = years * 12;
+    if (r === 0) return monthly * n;
+    return monthly * ((Math.pow(1 + r, n) - 1) / r) * (1 + r);
+  }
+  function requiredMonthly(goal, years, annualRatePct) {
+    const r = annualRatePct / 100 / 12;
+    const n = years * 12;
+    if (r === 0) return goal / n;
+    return goal / (((Math.pow(1 + r, n) - 1) / r) * (1 + r));
+  }
+  function fmtAED(n) {
+    n = Math.round(n);
+    return 'AED ' + n.toLocaleString();
+  }
+  function fmtK(n) {
+    return 'AED ' + (n >= 1000 ? Math.round(n / 1000) + 'K' : Math.round(n));
+  }
+
+  function recalcSavings() {
+    const years = termOptions[termIdx];
+    const rate = rateOptions[rateIdx];
+
+    if (calcMode === 'A') {
+      const monthly = amountOptions[amountIdx];
+      const fv = futureValue(monthly, years, rate);
+      const invested = monthly * years * 12;
+      const growth = fv - invested;
+      document.getElementById('resultLabel').textContent = 'Lumpsum Payout at Maturity';
+      document.getElementById('resultAmount').textContent = fmtAED(fv);
+      document.getElementById('investedLabel').textContent = 'You invest';
+      document.getElementById('investedVal').textContent = fmtK(invested);
+      document.getElementById('growthVal').textContent = fmtK(growth);
+      renderChart(monthly, years, rate, 'A');
+    } else {
+      const goal = goalOptions[goalIdx];
+      const monthly = requiredMonthly(goal, years, rate);
+      const invested = monthly * years * 12;
+      const growth = goal - invested;
+      document.getElementById('resultLabel').textContent = 'Required Monthly Investment';
+      document.getElementById('resultAmount').textContent = fmtAED(monthly) + '/mo';
+      document.getElementById('investedLabel').textContent = 'Total invested';
+      document.getElementById('investedVal').textContent = fmtK(invested);
+      document.getElementById('growthVal').textContent = fmtK(Math.max(growth, 0));
+      renderChart(monthly, years, rate, 'B');
+    }
+  }
+
+  function renderChart(monthly, years, rate, mode) {
+    const steps = 5;
+    const values = [];
+    for (let i = 1; i <= steps; i++) {
+      const y = Math.max(1, Math.round((years * i) / steps));
+      values.push({ year: y, fv: futureValue(monthly, y, rate) });
+    }
+    const maxFv = Math.max(...values.map(v => v.fv), 1);
+    values.forEach((v, i) => {
+      const heightPx = Math.max(10, Math.round((v.fv / maxFv) * 70));
+      document.getElementById('barFill' + i).style.height = heightPx + 'px';
+      document.getElementById('barLbl' + i).textContent = 'Y' + v.year;
+    });
+  }
+
+  function initCalculator() {
+    document.getElementById('amountFill').style.width = pctForIndex(amountIdx, amountOptions.length) + '%';
+    document.getElementById('amountThumb').style.left = 'calc(' + pctForIndex(amountIdx, amountOptions.length) + '% - 9px)';
+    document.getElementById('termFill').style.width = pctForIndex(termIdx, termOptions.length) + '%';
+    document.getElementById('termThumb').style.left = 'calc(' + pctForIndex(termIdx, termOptions.length) + '% - 9px)';
+    document.getElementById('rateFill').style.width = pctForIndex(rateIdx, rateOptions.length) + '%';
+    document.getElementById('rateThumb').style.left = 'calc(' + pctForIndex(rateIdx, rateOptions.length) + '% - 9px)';
+    document.getElementById('dv').textContent = termOptions[termIdx] + ' Years';
+    document.getElementById('rateLabel').textContent = rateOptions[rateIdx] + '% p.a.';
+    recalcSavings();
+  }
+  initCalculator();
 
   /* ===== Savings Guide content (sourced from the savings-plan landing page) ===== */
   const guideTopics = [
@@ -1039,23 +1156,6 @@
       <div class="guide-payment-row"><div class="guide-payment-icon" style="background:#fef3c7;">📄</div><div class="guide-payment-text"><h5>Cheque</h5><p>Pay using cheque at our branches or approved collection points.</p></div></div>
       <div class="guide-cta-wrap" style="margin:14px -16px -14px;"><div class="guide-cta-btn" onclick="closeGuide()">View Personalised Quote →</div></div>
     `;
-  }
-  function bump(el) {
-    const s = [30,40,50,60,70];
-    const f = el.querySelector('.fake-slider-fill');
-    const t = el.querySelector('.fake-slider-thumb');
-    const c = parseInt(f.style.width) || 30;
-    const n = s[(s.indexOf(c) + 1) % s.length];
-    f.style.width = n + '%'; t.style.left = 'calc(' + n + '% - 9px)';
-  }
-  const durs = [{w:25,t:'5 Years'},{w:35,t:'7 Years'},{w:45,t:'10 Years'},{w:55,t:'12 Years'},{w:65,t:'15 Years'},{w:75,t:'20 Years'}];
-  let di = 0;
-  function bumpDur(el) {
-    di = (di + 1) % durs.length;
-    const o = durs[di];
-    el.querySelector('.fake-slider-fill').style.width = o.w + '%';
-    el.querySelector('.fake-slider-thumb').style.left = 'calc(' + o.w + '% - 9px)';
-    document.getElementById('dv').textContent = o.t;
   }
   const fn = ['Dynamic','Balanced','Conservative'];
   function pickFund(i) {
