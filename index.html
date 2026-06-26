@@ -282,6 +282,24 @@
   .iframe-indicator { margin: 8px 16px 0; background: #fffbeb; border: 1.5px solid #fcd34d; border-radius: 10px; padding: 7px 12px; display: flex; align-items: center; gap: 8px; flex-shrink: 0; }
   .iframe-indicator p { font-size: 11px; color: #92400e; font-weight: 600; }
 
+  /* ===== My Policies screen ===== */
+  .policy-savings-banner { background: linear-gradient(135deg, #1d4ed8 0%, #1e40af 100%); border-radius: 16px; margin: 12px 16px; padding: 16px; padding-right: 96px; color: white; position: relative; overflow: hidden; min-height: 110px; cursor: pointer; }
+  .policy-savings-banner-eyebrow { background: rgba(255,255,255,0.18); border-radius: 20px; font-size: 10px; font-weight: 700; display: inline-block; padding: 3px 10px; margin-bottom: 7px; }
+  .policy-savings-banner h2 { font-size: 15px; font-weight: 800; line-height: 1.3; margin: 0 0 6px 0; }
+  .policy-savings-banner p { font-size: 11px; opacity: 0.88; line-height: 1.45; margin: 0 0 10px 0; }
+  .policy-savings-banner-cta { background: white; color: #1d4ed8; border-radius: 9px; padding: 7px 14px; font-size: 12px; font-weight: 700; display: inline-block; }
+  .policy-savings-banner-img { position: absolute; right: 4px; bottom: 0; width: 88px; height: 88px; object-fit: contain; object-position: bottom; }
+
+  .policy-card { background: white; border-radius: 14px; margin: 0 16px 12px; padding: 14px; box-shadow: 0 1px 4px rgba(0,0,0,0.06); }
+  .policy-card-top { display: flex; justify-content: space-between; align-items: flex-start; gap: 10px; }
+  .policy-card-left { display: flex; gap: 10px; align-items: flex-start; }
+  .policy-icon { font-size: 26px; flex-shrink: 0; }
+  .policy-name { font-size: 14px; font-weight: 700; color: #0f172a; }
+  .policy-sub { font-size: 11px; color: #64748b; margin-top: 2px; }
+  .policy-status { background: #dcfce7; color: #16a34a; font-size: 10px; font-weight: 700; padding: 3px 9px; border-radius: 12px; white-space: nowrap; flex-shrink: 0; }
+  .policy-detail-row { display: flex; justify-content: space-between; font-size: 11.5px; color: #475569; border-top: 1px solid #f1f5f9; margin-top: 10px; padding-top: 10px; }
+  .policy-detail-row span:first-child { color: #94a3b8; }
+
   @media (max-width: 420px) {
     .phone-shell { width: 92vw; height: 80vh; max-height: 720px; border-radius: 32px; border-width: 6px; }
   }
@@ -315,7 +333,7 @@
         </div>
 
         <div class="services-row">
-          <div class="service-card" onclick="go(2)">
+          <div class="service-card" onclick="go(10)">
             <div class="service-card-icon">📋</div>
             <div class="service-card-label">Policies</div>
           </div>
@@ -883,13 +901,66 @@
       </div>
     </div>
 
+    <!-- S10: MY POLICIES -->
+    <div class="screen" id="sc10">
+      <div class="status"><span>10:57</span><span>●●● 🔋</span></div>
+      <div class="topnav">
+        <div class="back-btn" onclick="go(0)"><svg viewBox="0 0 24 24" fill="none" stroke="#1d4ed8" stroke-width="2.5"><path d="M19 12H5M12 5l-7 7 7 7"/></svg></div>
+        <span class="topnav-title">My Policies</span>
+      </div>
+      <div class="scroll-content" style="padding-top:10px;">
+
+        <div class="policy-savings-banner" onclick="go(1)">
+          <div class="policy-savings-banner-eyebrow">✨ Recommended for you</div>
+          <h2>Your cover is sorted. Let's grow your money next.</h2>
+          <p>Start a savings plan from AED 500/month and put your protection and your future on the same path.</p>
+          <div class="policy-savings-banner-cta">Start Saving →</div>
+          <img src="assets/alfred-savings.png" class="policy-savings-banner-img">
+        </div>
+
+        <div class="sect-label" style="padding:4px 16px 6px;">Active Policies</div>
+
+        <div class="policy-card">
+          <div class="policy-card-top">
+            <div class="policy-card-left">
+              <div class="policy-icon">🚗</div>
+              <div>
+                <div class="policy-name">Car Insurance</div>
+                <div class="policy-sub">Comprehensive · Sukoon Insurance</div>
+              </div>
+            </div>
+            <div class="policy-status">Active</div>
+          </div>
+          <div class="policy-detail-row"><span>Policy number</span><span>CAR-2025-77291</span></div>
+          <div class="policy-detail-row"><span>Expires on</span><span>14 Jan 2027</span></div>
+        </div>
+
+        <div class="policy-card">
+          <div class="policy-card-top">
+            <div class="policy-card-left">
+              <div class="policy-icon">🩺</div>
+              <div>
+                <div class="policy-name">Health Insurance</div>
+                <div class="policy-sub">Individual Plan · Daman</div>
+              </div>
+            </div>
+            <div class="policy-status">Active</div>
+          </div>
+          <div class="policy-detail-row"><span>Policy number</span><span>HLT-2025-40218</span></div>
+          <div class="policy-detail-row"><span>Expires on</span><span>02 Mar 2027</span></div>
+        </div>
+
+        <div style="height:16px;"></div>
+      </div>
+    </div>
+
   </div>
 </div>
 
 <script>
   let cur = 0;
   function go(n) {
-    if (n === cur || n < 0 || n >= 10) return;
+    if (n === cur || n < 0 || n >= 11) return;
     const prev = document.getElementById('sc' + cur);
     const next = document.getElementById('sc' + n);
     const fwd = n > cur;
@@ -1061,31 +1132,31 @@
   const guideDetails = {
     what: {
       title: 'What is a savings plan & how does it work?',
-      intro: 'A savings plan is a long-term investment product offered through trusted, regulated life insurance companies. It helps you build wealth and enjoy financial security over time by growing your money through the power of compounding.',
+      intro: 'A savings plan is a long-term investment product offered through trusted, regulated life insurance companies. You contribute regularly, your money grows through compounding, and you receive a lumpsum payout when the plan matures.',
       items: [
-        { icon: '💰', text: 'You contribute monthly or as a lump sum into funds you choose.' },
+        { icon: '💰', text: 'Contribute monthly or as a lump sum into funds you choose.' },
         { icon: '📈', text: 'Your money grows through compound returns over your chosen term.' },
-        { icon: '🛡️', text: 'Backed by regulated insurance partners — your capital is protected within the structure of the plan.' },
-        { icon: '🎯', text: 'At maturity, you receive a lumpsum payout — the example on our calculator shows AED 1,000/month at 8% over 20 years growing from AED 240K contributed to over AED 580K.' },
+        { icon: '🛡️', text: 'Your capital is protected within the structure of the plan, backed by regulated insurance partners.' },
+        { icon: '🎯', text: 'For example, AED 1,000 a month at 8% over 20 years can grow from AED 240K contributed to over AED 580K at maturity.' },
       ],
     },
     types: {
       title: 'What types of savings plans are available?',
       intro: 'We offer savings solutions tailored to different life goals, so you can pick the one that matches what you\'re saving for.',
       items: [
-        { icon: '🏖️', text: 'Retirement plans — build a nest egg for your future.' },
-        { icon: '🎓', text: "Child education plans — secure your child's education costs in advance." },
-        { icon: '📈', text: 'Wealth-building / future investment plans — grow money with no fixed goal.' },
-        { icon: '🌙', text: 'Shariah-compliant plans — fully halal-certified investment structures.' },
-        { icon: '🏛️', text: 'Conventional plans — traditional interest-based growth structures.' },
+        { icon: '🏖️', text: 'Retirement plans to build a nest egg for your future.' },
+        { icon: '🎓', text: "Child education plans that secure your child's education costs in advance." },
+        { icon: '📈', text: 'Wealth-building plans for general growth, with no fixed goal.' },
+        { icon: '🌙', text: 'Shariah-compliant plans, fully halal-certified.' },
+        { icon: '🏛️', text: 'Conventional plans with traditional interest-based growth.' },
       ],
     },
     promises: {
       title: "Alfred's heartfelt promises",
-      intro: "We know your savings represent your future — here's what we promise every customer who saves with us.",
+      intro: "Your savings represent your future. Here's what we promise every customer who saves with us.",
       items: [
         { icon: '🛡️', text: 'Your money is protected with trusted, regulated financial partners.' },
-        { icon: '🔍', text: 'No hidden fees — every cost is explained upfront before you commit.' },
+        { icon: '🔍', text: 'No hidden fees. Every cost is explained upfront before you commit.' },
         { icon: '🤸', text: 'Flexible terms that fit your life, not the other way around.' },
         { icon: '👨‍💼', text: 'Free expert advice from a financial advisor, whenever you need it.' },
         { icon: '⭐', text: 'Backed by 30+ years of UAE insurance experience and 200,000+ trusted policyholders.' },
@@ -1095,7 +1166,7 @@
       title: 'What additional benefits are included?',
       intro: 'Beyond the core savings growth, most of our plans include extra flexibility and protection.',
       items: [
-        { icon: '🔄', text: 'Flexible contribution amounts and frequency — monthly or lumpsum.' },
+        { icon: '🔄', text: 'Flexible contribution amounts and frequency, monthly or lumpsum.' },
         { icon: '🌙', text: 'Switch between conventional and Shariah-compliant funds anytime.' },
         { icon: '🔓', text: 'Partial withdrawals allowed after a minimum holding period.' },
         { icon: '❤️', text: 'Optional life cover add-on for extra protection for your family.' },
@@ -1106,11 +1177,11 @@
       title: 'How can I get the best returns on my savings?',
       intro: 'A few simple choices can meaningfully change how much your savings grow by maturity.',
       items: [
-        { icon: '⏰', text: 'Start early — compounding rewards time more than amount.' },
+        { icon: '⏰', text: 'Start early. Compounding rewards time more than amount.' },
         { icon: '📅', text: 'Choose a longer term for higher growth potential.' },
         { icon: '📊', text: 'Consider a Dynamic portfolio if you have a higher risk appetite.' },
         { icon: '💵', text: 'Increase your contribution whenever you get a salary increment.' },
-        { icon: '🚫', text: 'Avoid early withdrawals — exit charges can reduce your overall growth.' },
+        { icon: '🚫', text: 'Avoid early withdrawals, since exit charges can reduce your overall growth.' },
       ],
     },
   };
@@ -1209,56 +1280,56 @@
       title: 'What does my life insurance cover?',
       intro: 'A life insurance policy is built around several core benefits, designed to protect your family financially under different circumstances.',
       items: [
-        { icon: '💰', text: 'Death Benefit — a lump sum payout to support your family if the unexpected happens during the policy term.' },
-        { icon: '🦽', text: 'Permanent Total Disability Cover — provides funds if you become permanently and totally disabled.' },
-        { icon: '🏠', text: 'Family Income Benefit — monthly payouts to help manage household expenses.' },
-        { icon: '🏥', text: 'Critical Illness Cover — pays out upon diagnosis of a serious covered illness.' },
-        { icon: '⏸️', text: 'Waiver of Premium — future premiums are waived if you become totally disabled.' },
-        { icon: '🚑', text: 'Accidental Death Benefit — an extra payout if death occurs from an accident.' },
-        { icon: '🛏️', text: 'Hospital Cash Benefit — fixed daily payments during hospitalization.' },
-        { icon: '⏳', text: 'Terminal Illness Benefit — an early payout if diagnosed with a terminal illness.' },
+        { icon: '💰', text: 'Death Benefit: a lump sum payout to support your family if the unexpected happens during the policy term.' },
+        { icon: '🦽', text: 'Permanent Total Disability Cover, providing funds if you become permanently and totally disabled.' },
+        { icon: '🏠', text: 'Family Income Benefit, monthly payouts to help manage household expenses.' },
+        { icon: '🏥', text: 'Critical Illness Cover, paying out upon diagnosis of a serious covered illness.' },
+        { icon: '⏸️', text: 'Waiver of Premium, so future premiums are waived if you become totally disabled.' },
+        { icon: '🚑', text: 'Accidental Death Benefit, an extra payout if death occurs from an accident.' },
+        { icon: '🛏️', text: 'Hospital Cash Benefit, fixed daily payments during hospitalization.' },
+        { icon: '⏳', text: 'Terminal Illness Benefit, an early payout if diagnosed with a terminal illness.' },
       ],
     },
     who: {
       title: 'Who needs life insurance in the UAE?',
-      intro: 'Life insurance isn\'t just for one type of person — it\'s relevant to anyone with people or debts depending on their income.',
+      intro: "Life insurance isn't just for one type of person. It's relevant to anyone with people or debts depending on their income.",
       items: [
         { icon: '👨‍👩‍👧', text: 'Anyone with dependents who rely on their income to cover daily expenses.' },
         { icon: '🏦', text: 'Anyone with a mortgage, personal loan, or other outstanding debt.' },
-        { icon: '🌍', text: 'Expats are fully eligible — life insurance is one of the most common protections UAE residents take out regardless of nationality.' },
-        { icon: '💼', text: 'Business owners — Keyman Insurance protects a company against the loss of a key person.' },
-        { icon: '❤️', text: "One policy, lasting peace of mind — protection designed around your life." },
+        { icon: '🌍', text: 'Expats are fully eligible. Life insurance is one of the most common protections UAE residents take out, regardless of nationality.' },
+        { icon: '💼', text: 'Business owners, since Keyman Insurance protects a company against the loss of a key person.' },
+        { icon: '❤️', text: 'One policy, lasting peace of mind. Protection designed around your life.' },
       ],
     },
     types: {
       title: 'What types of life insurance plans are available?',
       intro: 'There are five main plan structures, each suited to a different goal.',
       items: [
-        { icon: '📅', text: 'Term Life — covers you for a fixed period (e.g. 20 years), the most affordable option.' },
-        { icon: '♾️', text: 'Whole of Life — covers you for your entire lifetime, with a guaranteed payout.' },
-        { icon: '📈', text: 'Endowment Plans — combines life cover with a savings/investment component.' },
-        { icon: '🔑', text: 'Keyman Insurance — protects a business against the financial loss of a key employee or founder.' },
-        { icon: '👥', text: 'Group Life Insurance — employer-provided cover for a group of employees.' },
+        { icon: '📅', text: 'Term Life covers you for a fixed period (e.g. 20 years) and is the most affordable option.' },
+        { icon: '♾️', text: 'Whole of Life covers you for your entire lifetime, with a guaranteed payout.' },
+        { icon: '📈', text: 'Endowment Plans combine life cover with a savings or investment component.' },
+        { icon: '🔑', text: 'Keyman Insurance protects a business against the financial loss of a key employee or founder.' },
+        { icon: '👥', text: 'Group Life Insurance is employer-provided cover for a group of employees.' },
       ],
     },
     premium: {
       title: 'How is my premium calculated?',
-      intro: 'Plans start from as little as AED 63/month. Your exact premium depends on a few personal factors.',
+      intro: 'Plans start from as little as AED 63 a month. Your exact premium depends on a few personal factors.',
       items: [
-        { icon: '🎂', text: 'Your age — younger applicants generally get lower premiums.' },
-        { icon: '📅', text: 'Your policy term — longer terms affect the monthly cost.' },
-        { icon: '⚧', text: 'Your gender — statistically factored into the premium calculation.' },
-        { icon: '🚬', text: 'Smoking status — smokers are typically charged a higher premium.' },
-        { icon: '💵', text: 'Your chosen sum assured — higher coverage means a higher premium.' },
+        { icon: '🎂', text: 'Your age. Younger applicants generally get lower premiums.' },
+        { icon: '📅', text: 'Your policy term. Longer terms affect the monthly cost.' },
+        { icon: '⚧', text: 'Your gender, statistically factored into the premium calculation.' },
+        { icon: '🚬', text: 'Smoking status. Smokers are typically charged a higher premium.' },
+        { icon: '💵', text: 'Your chosen sum assured. Higher coverage means a higher premium.' },
       ],
     },
     faqs: {
       title: 'Common questions about life insurance',
       intro: 'A few things most customers want to know before buying.',
       items: [
-        { icon: '📑', text: 'You can hold multiple life insurance policies at the same time — there\'s no restriction on the number of plans.' },
+        { icon: '📑', text: "You can hold multiple life insurance policies at the same time. There's no restriction on the number of plans." },
         { icon: '💰', text: 'Payouts to your beneficiaries are generally tax-free in the UAE.' },
-        { icon: '🚫', text: 'You can cancel your policy at any time, subject to the insurer\'s terms.' },
+        { icon: '🚫', text: "You can cancel your policy at any time, subject to the insurer's terms." },
         { icon: '🔢', text: 'The minimum age to apply is typically 18 years old.' },
         { icon: '🩺', text: 'Medical tests may be required depending on your age and the coverage amount you select.' },
       ],
